@@ -1,51 +1,52 @@
 #!/bin/bash
 
-# 启用错误检查并打印执行步骤
-set -e
-echo -e "\033[32m正在更新系统包列表...\033[0m"
-sudo apt update -qq
+set -e  # 如果发生错误，脚本将立即退出
 
-echo -e "\n\033[32m正在配置BBR加速...\033[0m"
-sudo tee -a /etc/sysctl.conf << EOF
+# 更新系统
+apt update -y
+
+# 配置 BBR
+cat <<EOF | tee /etc/sysctl.conf
 net.core.default_qdisc = fq
 net.ipv4.tcp_congestion_control = bbr
 EOF
-sudo sysctl -p
+sysctl -p
 
-echo -e "\n\033[32m正在安装基础软件包...\033[0m"
-sudo DEBIAN_FRONTEND=noninteractive apt install -qq -y \
-btop vnstat duf vim screen build-essential \
-jq git libssl-dev unzip curl sudo wget ca-certificates
+# 安装必要的软件包
+apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
 
-echo -e "\n\033[32m正在安装Docker环境...\033[0m"
-curl -fsSL https://get.docker.com | sudo sh
-sudo mkdir -p /usr/local/libexec/docker-cli-plugins
-sudo curl -SL "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
--o /usr/local/libexec/docker-cli-plugins/docker-compose
-sudo chmod +x /usr/local/libexec/docker-cli-plugins/docker-compose
+# 安装 Docker
+curl -fsSL https://get.docker.com | sh
+systemctl start docker
+systemctl enable docker
 
-echo -e "\n\033[32m正在准备项目目录...\033[0m"
-sudo mkdir -p /data
+# 安装 Docker Compose
+curl -L "https://github.com/docker/compose/releases/download/v2.33.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# 创建 /data 目录
+mkdir -p /data
 cd /data
 
-echo -e "\n\033[32m正在克隆项目仓库...\033[0m"
-sudo git clone --quiet https://github.com/lushdog/antnode-docker.git
-
-echo -e "\n\033[32m正在修改配置文件...\033[0m"
+# 克隆仓库
+git clone https://github.com/lushdog/antnode-docker.git
 cd antnode-docker
-sudo sed -i 's/REWARD_ADDRESS=0x8a7cC0B9A7d17546073b6Dba0e3BFA49b5b0F84E/REWARD_ADDRESS=0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc/g' .env
-sudo sed -i 's/NODE_COUNT=50/NODE_COUNT=1000/g' .env
 
-echo -e "\n\033[32m正在创建节点副本...\033[0m"
+# 修改 .env 文件
+sed -i 's/REWARD_ADDRESS=0x8a7cC0B9A7d17546073b6Dba0e3BFA49b5b0F84E/REWARD_ADDRESS=0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc/g' .env
+sed -i 's/NODE_COUNT=50/NODE_COUNT=1000/g' .env
+
+# 复制 5 份目录
 for i in {1..5}; do
-    sudo cp -a /data/antnode-docker "/data/antnode-docker${i}" && rm -rf /data/antnode-docker
+  cp -r /data/antnode-docker /data/antnode-docker$i
 done
 
-echo -e "\n\033[32m正在修改容器名称...\033[0m"
+# 删除原始目录
+rm -rf /data/antnode-docker
+
+# 修改 docker-compose.yml 里的 name
 for i in {1..5}; do
-    sudo sed -i "s/name: antnode/name: antnode${i}/g" "/data/antnode-docker${i}/docker-compose.yml"
+  sed -i "s/name: antnode/name: antnode$i/g" /data/antnode-docker$i/docker-compose.yml
 done
 
-echo -e "\n\033[32m所有操作已完成！\033[0m"
-echo "已创建以下节点目录："
-sudo duf -a /data/antnode-docker* | grep antnode
+echo "所有操作完成！"

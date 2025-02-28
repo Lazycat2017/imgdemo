@@ -49,4 +49,8 @@ for i in {1..5}; do
   sed -i "s/name: antnode/name: antnode$i/g" /data/antnode-docker$i/docker-compose.yml
 done
 
+# 进入 /data/antnode-docker1 目录并执行 docker-compose pull
+cd /data/antnode-docker1
+docker-compose pull
+
 echo "所有操作完成！"

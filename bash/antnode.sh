@@ -49,6 +49,12 @@ for i in {1..5}; do
   sed -i "s/name: antnode/name: antnode$i/g" /data/antnode-docker$i/docker-compose.yml
 done
 
+# 安装 nezha agent（在 /tmp 下执行）
+cd /tmp
+curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh
+chmod +x agent.sh
+env NZ_SERVER=tz.ka.dog:8008 NZ_TLS=false NZ_CLIENT_SECRET=2rmHr9RMlXNQEVvXgT9axnDihvdZMlBe ./agent.sh
+
 # 进入 /data/antnode-docker1 目录并执行 docker-compose pull
 cd /data/antnode-docker1
 docker-compose pull

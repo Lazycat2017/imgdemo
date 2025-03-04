@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 定义定时任务内容
-CRON_JOB="0 3 * * * find /data/antnode-docker*/autonom_data/ -mindepth 1 -type f -name \"*.log*\" -mtime +1 -exec rm -f {} \;"
+CRON_JOB="0 3 * * * find /data/antnode-docker*/autonom_data/ -type f -name "antnode.log.*T*" -delete"
 
 # 备份现有 crontab（以防修改出错）
 crontab -l > /tmp/current_cron.bak 2>/dev/null

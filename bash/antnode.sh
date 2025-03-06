@@ -38,7 +38,7 @@ sed -i 's/REWARD_ADDRESS=0x8a7cC0B9A7d17546073b6Dba0e3BFA49b5b0F84E/REWARD_ADDRE
 sed -i 's/NODE_COUNT=50/NODE_COUNT=1000/g' .env
 
 # 复制 5 份目录
-for i in {1..5}; do
+for i in {1..6}; do
   cp -r /data/antnode-docker /data/antnode-docker$i
 done
 
@@ -46,7 +46,7 @@ done
 rm -rf /data/antnode-docker
 
 # 修改 docker-compose.yml 里的 name
-for i in {1..5}; do
+for i in {1..6}; do
   sed -i "s/name: antnode/name: antnode$i/g" /data/antnode-docker$i/docker-compose.yml
 done
 

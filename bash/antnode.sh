@@ -126,9 +126,10 @@ cleanup() {
 # 主函数
 main() {
     log_info "开始执行脚本..."
-    
-    check_dependencies
+
     update_system
+    install_packages
+    check_dependencies
     configure_bbr
     install_packages
     install_docker

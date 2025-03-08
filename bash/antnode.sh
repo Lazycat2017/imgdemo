@@ -28,11 +28,27 @@ log_error() {
     echo -e "${RED}[ERROR] $1${NC}" >&2
 }
 
-
 # 更新系统
 update_system() {
     log_info "更新系统..."
     apt update -y
+}
+
+# 安装必要的软件包
+install_packages() {
+    log_info "安装必要的软件包..."
+    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
+}
+
+# 检查依赖
+check_dependencies() {
+    log_info "检查依赖..."
+    for cmd in curl jq git; do
+        if ! command -v $cmd &> /dev/null; then
+            log_error "$cmd 未安装，请先安装它"
+            exit 1
+        fi
+    done
 }
 
 # 配置 BBR
@@ -45,11 +61,6 @@ EOF
     sysctl -p
 }
 
-# 安装必要的软件包
-install_packages() {
-    log_info "安装必要的软件包..."
-    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
-}
 
 # 安装 Docker
 install_docker() {

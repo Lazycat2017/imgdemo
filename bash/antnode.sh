@@ -28,16 +28,6 @@ log_error() {
     echo -e "${RED}[ERROR] $1${NC}" >&2
 }
 
-# 检查依赖
-check_dependencies() {
-    log_info "检查依赖..."
-    for cmd in curl jq git; do
-        if ! command -v $cmd &> /dev/null; then
-            log_error "$cmd 未安装，请先安装它"
-            exit 1
-        fi
-    done
-}
 
 # 更新系统
 update_system() {

@@ -40,17 +40,6 @@ install_packages() {
     apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
 }
 
-# 检查依赖
-check_dependencies() {
-    log_info "检查依赖..."
-    for cmd in curl jq git; do
-        if ! command -v $cmd &> /dev/null; then
-            log_error "$cmd 未安装，请先安装它"
-            exit 1
-        fi
-    done
-}
-
 # 配置 BBR
 configure_bbr() {
     log_info "配置 BBR..."
@@ -129,7 +118,6 @@ main() {
 
     update_system
     install_packages
-    check_dependencies
     configure_bbr
     install_packages
     install_docker

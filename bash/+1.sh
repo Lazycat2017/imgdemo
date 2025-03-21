@@ -14,7 +14,7 @@ done
 
 # 计算新的目录编号
 new_num=$((max_num + 1))
-echo "当前最大目录编号为 $max_num，将创建 antnode-docker$new_num"
+echo "当前最大目录编号为 antnode-docker$max_num，将创建 antnode-docker$new_num"
 
 # 克隆仓库
 git clone https://github.com/lushdog/antnode-docker.git

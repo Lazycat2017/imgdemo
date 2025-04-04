@@ -4,9 +4,9 @@
 set -e
 
 # 拉取指定版本镜像
-echo "正在拉取 antnode:1.2.6 镜像..."
-docker pull ghcr.io/lushdog/antnode:1.2.6 
-docker tag ghcr.io/lushdog/antnode:1.2.6 ghcr.io/lushdog/antnode:latest
+echo "正在拉取 antnode:1.2.11 镜像..."
+docker pull ghcr.io/lushdog/antnode:1.2.11
+docker tag ghcr.io/lushdog/antnode:1.2.11 ghcr.io/lushdog/antnode:latest
 
 # 停止所有容器
 echo "正在停止所有容器..."

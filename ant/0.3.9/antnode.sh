@@ -134,6 +134,9 @@ install_nezha_agent() {
 
 # 拉取 Docker 镜像
 pull_docker_images() {
+    log_info "清理现有 Docker 镜像..."
+    docker image prune -a -f
+    
     log_info "拉取 Docker 镜像..."
     cd /data/antnode-docker1
     docker-compose pull

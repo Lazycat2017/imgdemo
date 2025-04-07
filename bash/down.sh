@@ -8,7 +8,7 @@ screen -dmS down bash -c '
     # 创建 down.sh 并写入结束脚本
     cat > down.sh << EOF
 #!/bin/bash
-for i in {1..12}; do 
+for i in {1..20}; do 
     echo "正在结束 /data/antnode-docker\$i 的 docker-compose 任务..."
     cd /data/antnode-docker\$i || { echo "目录 /data/antnode-docker\$i 不存在，跳过"; continue; }
     

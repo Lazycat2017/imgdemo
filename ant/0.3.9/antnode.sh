@@ -13,7 +13,7 @@ NC='\033[0m' # 无颜色
 # 定义配置参数
 REWARD_ADDRESS="0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc"
 NODE_COUNT=300
-INSTANCE_COUNT=22
+INSTANCE_COUNT=23
 
 # 日志函数
 log_info() {

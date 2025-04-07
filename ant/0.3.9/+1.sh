@@ -16,9 +16,8 @@ done
 new_num=$((max_num + 1))
 echo "当前最大目录编号为 antnode-docker$max_num，将创建 antnode-docker$new_num"
 
-# 克隆仓库
-git clone https://github.com/lushdog/antnode-docker.git
-mv antnode-docker antnode-docker$new_num
+# 直接克隆仓库到目标目录
+git clone https://github.com/lushdog/antnode-docker.git antnode-docker$new_num
 cd antnode-docker$new_num
 
 sed -i 's/REWARD_ADDRESS=0x8a7cC0B9A7d17546073b6Dba0e3BFA49b5b0F84E/REWARD_ADDRESS=0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc/g' .env

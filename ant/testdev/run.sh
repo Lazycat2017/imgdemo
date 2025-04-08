@@ -12,10 +12,10 @@ screen -dmS run bash -c '
 # 检查系统负载函数
 check_load() {
     # 获取当前系统负载的第一个值（1分钟平均负载）
-    local current_load=$(cat /proc/loadavg | awk '{print $1}')
+    local current_load=$(cat /proc/loadavg | awk "{print \$1}")
     
-    # 使用 awk 进行浮点数比较
-    if awk -v load="$current_load" 'BEGIN {exit !(load < 150)}'; then
+    # 使用简单的字符串比较
+    if (( $(echo "$current_load < 150" | bc -l) )); then
         return 0  # 负载小于150，返回成功
     else
         return 1  # 负载大于等于150，返回失败
@@ -33,12 +33,12 @@ for i in {1..30}; do
     
     # 循环检查系统负载，直到负载小于150
     while ! check_load; do
-        current_load=$(cat /proc/loadavg | awk '{print $1}')
+        current_load=$(cat /proc/loadavg | awk "{print \$1}")
         echo "当前系统负载较高: $current_load，等待30秒..."
         sleep 30
     done
     
-    current_load=$(cat /proc/loadavg | awk '{print $1}')
+    current_load=$(cat /proc/loadavg | awk "{print \$1}")
     echo "系统负载已降低: $current_load，等待10分钟后继续部署下一个容器"
     sleep 600  # 600秒 = 10分钟
     

@@ -37,7 +37,7 @@ update_system() {
 # 安装必要的软件包
 install_packages() {
     log_info "安装必要的软件包..."
-    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
+    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates bc
 }
 
 # 配置 BBR

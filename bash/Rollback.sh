@@ -10,7 +10,7 @@ docker tag ghcr.io/lushdog/antnode:1.2.11 ghcr.io/lushdog/antnode:latest
 
 # 停止所有容器
 echo "正在停止所有容器..."
-for i in {1..10}; do 
+for i in {1..19}; do 
   if [ -d "/data/antnode-docker$i" ]; then
     cd /data/antnode-docker$i && docker-compose down
   else

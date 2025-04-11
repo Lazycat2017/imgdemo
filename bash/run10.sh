@@ -8,7 +8,7 @@ screen -dmS run bash -c '
     # 创建 run.sh 并写入启动脚本
     cat > run.sh << EOF
 #!/bin/bash
-for i in {1..10}; do 
+for i in {1..9}; do 
     echo "正在启动 /data/antnode-docker\$i 的 docker-compose 任务..."
     cd /data/antnode-docker\$i || { echo "目录 /data/antnode-docker\$i 不存在，跳过"; continue; }
     

@@ -12,8 +12,8 @@ NC='\033[0m' # 无颜色
 
 # 定义配置参数
 REWARD_ADDRESS="0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc"
-NODE_COUNT=1000
-INSTANCE_COUNT=6
+NODE_COUNT=850
+INSTANCE_COUNT=8
 
 # 日志函数
 log_info() {
@@ -37,7 +37,7 @@ update_system() {
 # 安装必要的软件包
 install_packages() {
     log_info "安装必要的软件包..."
-    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates
+    apt install -y btop vnstat duf vim screen build-essential jq git libssl-dev unzip curl sudo wget ca-certificates bc neofetch 
 }
 
 # 配置 BBR
@@ -102,8 +102,8 @@ install_nezha_agent() {
 # 拉取 Docker 镜像
 pull_docker_images() {
     log_info "拉取 Docker 镜像..."
-    cd /data/antnode-docker1
-    docker-compose pull
+    docker pull ghcr.io/lushdog/antnode:1.2.11
+    docker tag ghcr.io/lushdog/antnode:1.2.11 ghcr.io/lushdog/antnode:latest
 }
 
 # 清理函数

@@ -15,10 +15,10 @@ check_load() {
     local current_load=$(cat /proc/loadavg | awk "{print \$1}")
     
     # 使用简单的字符串比较
-    if (( $(echo "$current_load < 150" | bc -l) )); then
-        return 0  # 负载小于150，返回成功
+    if (( $(echo "$current_load < 300" | bc -l) )); then
+        return 0  # 负载小于300，返回成功
     else
-        return 1  # 负载大于等于150，返回失败
+        return 1  # 负载大于等于300，返回失败
     fi
 }
 

@@ -22,7 +22,7 @@ check_load() {
     fi
 }
 
-for i in {1..6}; do 
+for i in {1..5}; do 
     echo "正在启动 /data/antnode-docker$i 的 docker-compose 任务..."
     cd /data/antnode-docker$i || { echo "目录 /data/antnode-docker$i 不存在，跳过"; continue; }
     

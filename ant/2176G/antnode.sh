@@ -28,14 +28,6 @@ log_error() {
     echo -e "${RED}[ERROR] $1${NC}" >&2
 }
 
-# 检查是否以root权限运行
-check_root() {
-    if [ "$(id -u)" -ne 0 ]; then
-        log_error "此脚本需要root权限运行，请使用sudo或以root身份运行"
-        exit 1
-    }
-}
-
 # 更新系统
 update_system() {
     log_info "更新系统..."
@@ -230,7 +222,6 @@ cleanup() {
 main() {
     log_info "开始执行脚本..."
     
-    check_root
     update_system
     install_packages
     optimize_network

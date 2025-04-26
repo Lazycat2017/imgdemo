@@ -193,17 +193,22 @@ setup_cron_job() {
     log_info "设置定时清理日志的任务..."
     
     # 定义定时任务内容
-    CRON_JOB="0 3 * * * find /data/antnode-docker*/autonom_data/ -type f -name \"antnode.log.*T*\" -delete"
+    CRON_JOB='0 3 * * * find /data/antnode-docker*/autonom_data/ -type f -name "antnode.log.*T*" -delete'
 
     # 备份现有 crontab（以防修改出错）
-    crontab -l > /tmp/current_cron.bak 2>/dev/null
+    if ! crontab -l > /tmp/current_cron.bak 2>/dev/null; then
+        log_info "当前没有crontab任务，将创建新的任务"
+    fi
 
     # 检查是否已存在该任务，避免重复添加
     if crontab -l 2>/dev/null | grep -Fq "$CRON_JOB"; then
         log_info "Crontab 任务已存在，无需重复添加。"
     else
         # 将新任务追加到当前的 crontab 任务列表
-        (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -
+        if ! (crontab -l 2>/dev/null; echo "$CRON_JOB") | crontab -; then
+            log_error "Crontab 任务添加失败"
+            return 1
+        fi
         log_success "Crontab 任务已成功添加！"
     fi
 

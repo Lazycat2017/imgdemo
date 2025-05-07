@@ -74,7 +74,7 @@ setup_antnode() {
     cd /data
     
     log_info "克隆仓库..."
-    git clone https://github.com/lushdog/antnode-docker.git
+    git clone https://git.max.xch.im/maxmind/antnode-docker
     cd antnode-docker
     
     log_info "修改 .env 文件..."
@@ -102,8 +102,8 @@ install_nezha_agent() {
 # 拉取 Docker 镜像
 pull_docker_images() {
     log_info "拉取 Docker 镜像..."
-    docker pull ghcr.io/lushdog/antnode:1.2.11
-    docker tag ghcr.io/lushdog/antnode:1.2.11 ghcr.io/lushdog/antnode:latest
+    cd /data/antnode-docker1
+    docker-compose pull
 }
 
 # 清理函数

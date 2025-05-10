@@ -138,8 +138,10 @@ pull_docker_images() {
     docker image prune -a -f
     
     log_info "拉取 Docker 镜像..."
-    cd /data/antnode-docker1
-    docker-compose pull
+    docker pull ghcr.io/lushdog/antnode:4.1.2
+    docker tag ghcr.io/lushdog/antnode:4.1.2 ghcr.io/lushdog/antnode:latest
+#    cd /data/antnode-docker1
+#    docker-compose pull
 }
 
 # 清理函数

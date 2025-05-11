@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# 检查是否在screen会话中运行
+if [ -z "$STY" ]; then
+    # 如果不在screen会话中，则启动一个新的screen会话来运行此脚本
+    echo "正在启动screen会话..."
+    exec screen -dmS antnode_update bash -c "bash $0 _in_screen; exec bash"
+    echo "脚本已在screen会话中启动，可以使用 'screen -r antnode_update' 查看运行状态"
+    exit 0
+fi
+
 # 添加错误处理
 set -e
 
@@ -33,15 +42,12 @@ while [ $attempt -le $max_attempts ]; do
     fi
 done
 
-# 使用screen命令建立后台窗口执行run.sh
+# 执行run.sh
 echo "启动后台任务..."
 if [ -f "/data/run.sh" ]; then
-  if ! screen -dmS runantnode bash -c '/data/run.sh'; then
-    echo "错误: 后台任务启动失败"
-    exit 1
-  fi
+    bash /data/run.sh
 else
-  echo "警告: /data/run.sh 文件不存在，无法启动后台任务"
+    echo "警告: /data/run.sh 文件不存在，无法启动后台任务"
 fi
 
 echo "操作完成"

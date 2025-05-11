@@ -4,14 +4,35 @@
 if [ -z "$STY" ]; then
     # 如果不在screen会话中，则启动一个新的screen会话来运行此脚本
     echo "正在启动screen会话..."
-    script_path=$(readlink -f "$0")
-    screen -dmS antnode_update bash -c "bash \"$script_path\" _in_screen"
-    echo "脚本已在screen会话中启动，可以使用 'screen -r antnode_update' 查看运行状态"
+    # 获取脚本的绝对路径
+    SCRIPT_PATH=$(readlink -f "$0")
+    # 确保screen会话名称唯一
+    SESSION_NAME="antnode_update_$$"
+    
+    # 使用更可靠的方式启动screen会话
+    screen -S "$SESSION_NAME" -dm bash -c "bash \"$SCRIPT_PATH\" _in_screen; exec bash"
+    
+    # 等待screen会话创建
+    sleep 2
+    
+    # 验证screen会话是否成功创建
+    if screen -ls | grep -q "$SESSION_NAME"; then
+        echo "screen会话已成功创建，使用以下命令查看运行状态："
+        echo "screen -r $SESSION_NAME"
+    else
+        echo "错误：screen会话创建失败"
+        exit 1
+    fi
     exit 0
 fi
 
 # 添加错误处理
 set -e
+
+# 记录日志
+exec 1> >(tee -a "/data/up_$(date +%Y%m%d_%H%M%S).log") 2>&1
+
+echo "开始执行更新脚本..."
 
 # 停止所有容器
 echo "正在停止所有容器..."

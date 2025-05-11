@@ -4,7 +4,8 @@
 if [ -z "$STY" ]; then
     # 如果不在screen会话中，则启动一个新的screen会话来运行此脚本
     echo "正在启动screen会话..."
-    exec screen -dmS antnode_update bash -c "bash $0 _in_screen; exec bash"
+    script_path=$(readlink -f "$0")
+    screen -dmS antnode_update bash -c "bash \"$script_path\" _in_screen"
     echo "脚本已在screen会话中启动，可以使用 'screen -r antnode_update' 查看运行状态"
     exit 0
 fi

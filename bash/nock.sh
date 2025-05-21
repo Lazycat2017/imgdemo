@@ -29,7 +29,7 @@ done
 cd nockchain || { echo "无法进入nockchain目录"; exit 1; }
 
 # 复制.env.sample为.env
-cp .env.example .env || { echo "复制.env_example失败"; exit 1; }
+cp .env.example .env || { echo "复制.env.example失败"; exit 1; }
 
 # 替换MINING_PUBKEY的值
 sed -i 's/^MINING_PUBKEY=.*/MINING_PUBKEY=39GUmwZeKy3GRGJ9qmdigyBuEfyHroXFgCoTRSwUbJvqX7u9n3A42nK864VNhmcXaUaGfYCwKxLsRW1V1qEHPeCcFoWLPEMYdxiBUQVgZGyXRSmTcwuW1tB7qauVrmftRRdL/' .env || { echo "替换MINING_PUBKEY失败"; exit 1; }

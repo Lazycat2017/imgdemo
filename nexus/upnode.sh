@@ -27,13 +27,20 @@ for i in "" 1 2 3 4 5; do
         cd "$nexus_dir"
         
         if [ -f "docker-compose.yml" ] || [ -f "docker-compose.yaml" ]; then
-            echo "在 $nexus_dir 中执行 docker-compose restart"
-            docker-compose restart
+            echo "在 $nexus_dir 中执行 docker-compose down"
+            docker-compose down
             
             if [ $? -eq 0 ]; then
-                echo "$nexus_dir 重启成功"
+                echo "$nexus_dir down 成功，开始启动服务"
+                docker-compose up -d
+                
+                if [ $? -eq 0 ]; then
+                    echo "$nexus_dir 启动成功"
+                else
+                    echo "$nexus_dir 启动失败"
+                fi
             else
-                echo "$nexus_dir 重启失败"
+                echo "$nexus_dir down 失败"
             fi
         else
             echo "在 $nexus_dir 中未找到 docker-compose.yml 文件"

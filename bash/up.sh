@@ -47,7 +47,7 @@ done
 # 修改NODE_COUNT配置
 echo "正在修改NODE_COUNT配置..."
 for i in {1..4}; do 
-   sed -i 's/^NODE_COUNT=.*/NODE_COUNT=750/' /data/antnode-docker$i/.env 
+   sed -i 's/^NODE_COUNT=.*/NODE_COUNT=700/' /data/antnode-docker$i/.env 
 done
 
 # 拉取指定版本镜像

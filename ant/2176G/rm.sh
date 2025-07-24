@@ -31,23 +31,16 @@ done
 
 echo "所有 Docker Compose 服务停止完成"
 
-# 确认是否要删除 /data 目录下的所有文件
-echo "警告: 即将删除 /data 目录下的所有文件！"
-read -p "确认删除吗？(y/N): " confirm
+# 自动删除 /data 目录下的所有文件
+echo "正在删除 /data 目录下的所有文件..."
 
-if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
-    echo "正在删除 /data 目录下的所有文件..."
-    
-    # 检查 /data 目录是否存在
-    if [ -d "/data" ]; then
-        # 删除 /data 目录下的所有文件和子目录
-        rm -rf /data/*
-        echo "成功删除 /data 目录下的所有文件"
-    else
-        echo "警告: /data 目录不存在"
-    fi
+# 检查 /data 目录是否存在
+if [ -d "/data" ]; then
+    # 删除 /data 目录下的所有文件和子目录
+    rm -rf /data/*
+    echo "成功删除 /data 目录下的所有文件"
 else
-    echo "取消删除操作"
+    echo "警告: /data 目录不存在"
 fi
 
 echo "脚本执行完成"

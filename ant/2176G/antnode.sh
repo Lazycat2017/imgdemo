@@ -172,14 +172,14 @@ setup_antnode() {
     rm -rf /data/antnode-docker
 }
 
-# 安装 nezha agent
-# install_nezha_agent() {
-#     log_info "安装 nezha agent..."
-#     cd /tmp
-#     curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh
-#     chmod +x agent.sh
-#     env NZ_SERVER=tz.ka.dog:8008 NZ_TLS=false NZ_CLIENT_SECRET=2rmHr9RMlXNQEVvXgT9axnDihvdZMlBe ./agent.sh
-# }
+ 安装 nezha agent
+ install_nezha_agent() {
+     log_info "安装 nezha agent..."
+     cd /tmp
+     curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh
+     chmod +x agent.sh
+     env NZ_SERVER=tz.ka.dog:8008 NZ_TLS=false NZ_CLIENT_SECRET=2rmHr9RMlXNQEVvXgT9axnDihvdZMlBe ./agent.sh
+ }
 
 # 拉取 Docker 镜像
 pull_docker_images() {
@@ -233,7 +233,7 @@ main() {
     install_docker
     install_docker_compose
     setup_antnode
-    # install_nezha_agent
+    install_nezha_agent
     pull_docker_images
     setup_cron_job
     cleanup

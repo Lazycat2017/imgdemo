@@ -12,7 +12,7 @@ NC='\033[0m' # 无颜色
 
 # 定义配置参数
 REWARD_ADDRESS="0x73b548474b878d8451dbb4d0fe7b4f2c3b890bdc"
-NODE_COUNT=875
+NODE_COUNT=700
 INSTANCE_COUNT=4
 
 # 日志函数
@@ -185,7 +185,7 @@ install_nezha_agent() {
 pull_docker_images() {
     log_info "拉取 Docker 镜像..."
     cd /data/antnode-docker1
-    docker-compose pull
+    docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.7.1.3
 }
 
 # 设置定时清理日志的任务

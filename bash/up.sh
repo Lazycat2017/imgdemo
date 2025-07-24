@@ -50,25 +50,15 @@ for i in {1..4}; do
    sed -i 's/^NODE_COUNT=.*/NODE_COUNT=700/' /data/antnode-docker$i/.env 
 done
 
-# 拉取指定版本镜像
-echo "正在拉取 antnode 镜像..."
-max_attempts=3
-attempt=1
-while [ $attempt -le $max_attempts ]; do
-    if docker pull ghcr.io/lushdog/antnode:latest; then
-        echo "镜像拉取成功"
-        break
-    else
-        echo "第 $attempt 次拉取失败"
-        if [ $attempt -eq $max_attempts ]; then
-            echo "错误: 镜像拉取失败，已达到最大重试次数"
-            exit 1
-        fi
-        echo "等待 5 秒后重试..."
-        sleep 5
-        attempt=$((attempt + 1))
-    fi
-done
+# 本地编译镜像
+echo "正在编译 antnode 镜像..."
+cd /data/antnode-docker1/
+if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.7.1.3; then
+    echo "镜像编译成功"
+else
+    echo "错误: 镜像编译失败"
+    exit 1
+fi
 
 # 执行run.sh
 echo "启动后台任务..."

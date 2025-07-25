@@ -172,8 +172,8 @@ setup_antnode() {
     rm -rf /data/antnode-docker
 }
 
- 安装 nezha agent
- install_nezha_agent() {
+# 安装 nezha agent
+install_nezha_agent() {
      log_info "安装 nezha agent..."
      cd /tmp
      curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh

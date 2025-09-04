@@ -53,7 +53,7 @@ done
 # 本地编译镜像
 echo "正在编译 antnode 镜像..."
 cd /data/antnode-docker1/
-if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.7.1.5; then
+if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.9.1.2; then
     echo "镜像编译成功"
 else
     echo "错误: 镜像编译失败"

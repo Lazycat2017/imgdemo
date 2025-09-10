@@ -178,7 +178,7 @@ install_nezha_agent() {
      cd /tmp
      curl -L https://raw.githubusercontent.com/nezhahq/scripts/main/agent/install.sh -o agent.sh
      chmod +x agent.sh
-     env NZ_SERVER=tz.ka.dog:8008 NZ_TLS=false NZ_CLIENT_SECRET=2rmHr9RMlXNQEVvXgT9axnDihvdZMlBe ./agent.sh
+     env NZ_SERVER=wk.ka.dog:443 NZ_TLS=true NZ_CLIENT_SECRET=faH3fQ1G198ehhJXBn7bBR1uSh7vrTgc ./agent.sh
  }
 
 # 拉取 Docker 镜像

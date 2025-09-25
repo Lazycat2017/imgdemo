@@ -156,7 +156,7 @@ setup_antnode() {
     cd /data
     
     log_info "克隆仓库..."
-    git clone https://git.max.xch.im/maxmind/antnode-docker
+    git clone https://github.com/Lazycat2017/antnode-docker
     cd antnode-docker
     
     log_info "修改 .env 文件..."

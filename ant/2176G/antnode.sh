@@ -12,7 +12,7 @@ NC='\033[0m' # 无颜色
 
 # 定义配置参数
 REWARD_ADDRESS="0x938dE25d7035F094A00d26EA10C7E8B7B139a0dA"
-NODE_COUNT=700
+NODE_COUNT=900
 INSTANCE_COUNT=4
 
 # 日志函数
@@ -156,7 +156,7 @@ setup_antnode() {
     cd /data
     
     log_info "克隆仓库..."
-    git clone https://git.max.xch.im/maxmind/antnode-docker
+    git clone https://github.com/Lazycat2017/antnode-docker
     cd antnode-docker
     
     log_info "修改 .env 文件..."

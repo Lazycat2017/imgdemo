@@ -50,7 +50,7 @@ for i in {1..4}; do
    sed -i 's/^NODE_COUNT=.*/NODE_COUNT=700/' /data/antnode-docker$i/.env 
 done
 
-# 本地编译镜像
+# 本地编译镜像2
 echo "正在编译 antnode 镜像..."
 cd /data/antnode-docker1/
 if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.9.2.1; then

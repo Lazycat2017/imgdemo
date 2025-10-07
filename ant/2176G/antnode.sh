@@ -181,7 +181,7 @@ install_nezha_agent() {
      env NZ_SERVER=wk.ka.dog:443 NZ_TLS=true NZ_CLIENT_SECRET=faH3fQ1G198ehhJXBn7bBR1uSh7vrTgc ./agent.sh
  }
 
-# 拉取 Docker 镜像
+# 拉取 Docker 镜像2
 pull_docker_images() {
     log_info "拉取 Docker 镜像..."
     cd /data/antnode-docker1

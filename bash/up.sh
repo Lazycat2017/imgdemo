@@ -1,20 +1,18 @@
 #!/bin/bash
 
-# 版本号参数处理
-if [ $# -eq 0 ]; then
-    # 如果没有参数，使用默认版本号
-    VERSION="2025.10.1.5"
-    echo "使用默认版本号：$VERSION"
-elif [ $# -eq 1 ]; then
-    # 如果有一个参数，使用用户指定的版本号
+# 版本号参数处理（兼容 screen 的 _in_screen 哨兵参数）
+if [ "$1" = "_in_screen" ]; then
+    if [ -n "$2" ]; then
+        VERSION="$2"
+    else
+        VERSION="2025.10.1.5"
+    fi
+elif [ -n "$1" ]; then
     VERSION="$1"
-    echo "使用指定版本号：$VERSION"
 else
-    echo "用法：$0 [版本号]"
-    echo "例如：$0 2025.10.1.6"
-    echo "或者直接运行 $0 使用默认版本号 (2025.10.1.5)"
-    exit 1
+    VERSION="2025.10.1.5"
 fi
+echo "使用版本号：$VERSION"
 
 # 验证版本号格式 (YYYY.MM.DD.N)
 if ! [[ "$VERSION" =~ ^[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$ ]]; then

@@ -32,7 +32,7 @@ if [ -z "$STY" ]; then
     SESSION_NAME="antnode_update_$$"
     
     # 使用更可靠的方式启动screen会话，传递版本号参数
-    screen -S "$SESSION_NAME" -dm bash -c "bash \"$SCRIPT_PATH\" \"$VERSION\" _in_screen; exec bash"
+    screen -S "$SESSION_NAME" -dm bash -c "bash \"$SCRIPT_PATH\" _in_screen \"$VERSION\"; exec bash"
     
     # 等待screen会话创建
     sleep 2

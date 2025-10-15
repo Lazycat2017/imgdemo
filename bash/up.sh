@@ -1,5 +1,29 @@
 #!/bin/bash
 
+# 版本号参数处理
+if [ $# -eq 0 ]; then
+    # 如果没有参数，使用默认版本号
+    VERSION="2025.10.1.5"
+    echo "使用默认版本号：$VERSION"
+elif [ $# -eq 1 ]; then
+    # 如果有一个参数，使用用户指定的版本号
+    VERSION="$1"
+    echo "使用指定版本号：$VERSION"
+else
+    echo "用法：$0 [版本号]"
+    echo "例如：$0 2025.10.1.6"
+    echo "或者直接运行 $0 使用默认版本号 (2025.10.1.5)"
+    exit 1
+fi
+
+# 验证版本号格式 (YYYY.MM.DD.N)
+if ! [[ "$VERSION" =~ ^[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}\.[0-9]+$ ]]; then
+    echo "错误：版本号格式不正确！"
+    echo "正确格式：YYYY.MM.DD.N (例如：2025.10.1.6)"
+    echo "当前输入：$VERSION"
+    exit 1
+fi
+
 # 检查是否在screen会话中运行
 if [ -z "$STY" ]; then
     # 如果不在screen会话中，则启动一个新的screen会话来运行此脚本
@@ -9,8 +33,8 @@ if [ -z "$STY" ]; then
     # 确保screen会话名称唯一
     SESSION_NAME="antnode_update_$$"
     
-    # 使用更可靠的方式启动screen会话
-    screen -S "$SESSION_NAME" -dm bash -c "bash \"$SCRIPT_PATH\" _in_screen; exec bash"
+    # 使用更可靠的方式启动screen会话，传递版本号参数
+    screen -S "$SESSION_NAME" -dm bash -c "bash \"$SCRIPT_PATH\" \"$VERSION\" _in_screen; exec bash"
     
     # 等待screen会话创建
     sleep 2
@@ -52,8 +76,9 @@ done
 
 # 本地编译镜像2
 echo "正在编译 antnode 镜像..."
+echo "使用版本号：$VERSION"
 cd /data/antnode-docker1/
-if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.9.2.1; then
+if docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=$VERSION; then
     echo "镜像编译成功"
 else
     echo "错误: 镜像编译失败"

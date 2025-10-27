@@ -2,9 +2,9 @@
 
 # Neptune GPU Miner 启动脚本（使用 screen 会话 npt）
 # 作用：创建名为 npt 的 screen 会话并在其中运行 dr_neptune_prover
-# 用法：./npt.sh [WORKER_ID] [GPU_IDS]
-# 例如：./npt.sh qj5091 "0,1,2,3"
-# 或者：./npt.sh qj5092 "0,1,2,3,4,5,6,7"
+# 用法：./npt.sh [WORKER_ID] [GPU_IDS] [MODE]
+# 例如：./npt.sh qj5091 "0,1,2,3" 1
+# 或者：./npt.sh qj5092 "0,1,2,3,4,5,6,7" 2
 
 set -euo pipefail
 
@@ -16,19 +16,27 @@ if [ $# -eq 0 ]; then
     # 没有参数，使用默认值
     WORKER_ID="qj5090"
     GPU_IDS="0,1,2,3,4,5,6,7"
+    MODE="1"
 elif [ $# -eq 1 ]; then
     # 只有一个参数，作为 WORKER_ID
     WORKER_ID="$1"
     GPU_IDS="0,1,2,3,4,5,6,7"
+    MODE="1"
 elif [ $# -eq 2 ]; then
     # 两个参数，分别是 WORKER_ID 和 GPU_IDS
     WORKER_ID="$1"
     GPU_IDS="$2"
+    MODE="1"
+elif [ $# -eq 3 ]; then
+    # 三个参数，分别是 WORKER_ID、GPU_IDS 和 MODE
+    WORKER_ID="$1"
+    GPU_IDS="$2"
+    MODE="$3"
 else
-    echo "用法：$0 [WORKER_ID] [GPU_IDS]"
-    echo "例如：$0 qj5091 \"0,1,2,3\""
-    echo "或者：$0 qj5092 \"0,1,2,3,4,5,6,7\""
-    echo "或者直接运行 $0 使用默认配置 (qj5090)"
+    echo "用法：$0 [WORKER_ID] [GPU_IDS] [MODE]"
+    echo "例如：$0 qj5091 \"0,1,2,3\" 1"
+    echo "或者：$0 qj5092 \"0,1,2,3,4,5,6,7\" 2"
+    echo "或者直接运行 $0 使用默认配置 (qj5090, 全部GPU, MODE=1)"
     exit 1
 fi
 
@@ -38,12 +46,12 @@ WORKER="${WORKER_PREFIX}${WORKER_ID}"
 echo "使用配置："
 echo "  WORKER: $WORKER"
 echo "  GPU_IDS: $GPU_IDS"
+echo "  MODE: $MODE"
 
 SESSION="npt"
 BIN="dr_neptune_prover"
 URL="https://dl.zao.re/npt/dr_neptune_prover"
 POOL="stratum+tcp://neptune.drpool.io:30127"
-MODE="1"
 
 ensure_deps() {
   if ! command -v screen >/dev/null 2>&1; then

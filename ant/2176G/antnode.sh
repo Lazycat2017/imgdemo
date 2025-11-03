@@ -185,7 +185,7 @@ install_nezha_agent() {
 pull_docker_images() {
     log_info "拉取 Docker 镜像..."
     cd /data/antnode-docker1
-    docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.9.2.1
+    docker build . --tag ghcr.io/lushdog/antnode:latest --build-arg VERSION=2025.10.1.6
 }
 
 # 设置定时清理日志的任务

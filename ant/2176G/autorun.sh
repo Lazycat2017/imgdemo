@@ -196,7 +196,7 @@ else
     exit 1
 fi
 EOF
-    
+
     # 赋予执行权限
     chmod +x autorun.sh
     

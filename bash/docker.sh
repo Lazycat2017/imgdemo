@@ -97,14 +97,43 @@ install_docker() {
     if [ "$USE_PROXY" = true ]; then
         # 中国IP使用阿里云镜像安装
         log_info "使用阿里云镜像安装 Docker..."
-        curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-        if [ $? -ne 0 ]; then
-            # 如果直接下载失败，尝试使用阿里云的脚本
+        curl -fsSL https://get.docker.com -o /tmp/get-docker.sh 2>/dev/null
+        if [ $? -ne 0 ] || [ ! -s /tmp/get-docker.sh ]; then
+            # 如果直接下载失败，尝试使用阿里云源手动安装
             log_warn "从 get.docker.com 下载失败，尝试备用方案..."
-            curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+            
+            # 获取系统版本代号（使用 /etc/os-release，更可靠）
+            local version_codename=""
+            if [ -f /etc/os-release ]; then
+                version_codename=$(grep "VERSION_CODENAME" /etc/os-release | cut -d'=' -f2)
+            fi
+            # 如果没有获取到，尝试其他方式
+            if [ -z "$version_codename" ]; then
+                version_codename=$(cat /etc/debian_version 2>/dev/null | cut -d'/' -f1 | cut -d'.' -f1)
+                # 将数字版本映射到代号
+                case "$version_codename" in
+                    12) version_codename="bookworm" ;;
+                    11) version_codename="bullseye" ;;
+                    10) version_codename="buster" ;;
+                    *) version_codename="bookworm" ;;  # 默认使用 bookworm
+                esac
+            fi
+            
+            log_info "检测到系统版本: $version_codename"
+            
+            # 安装必要依赖
+            apt install -y ca-certificates gnupg
+            
+            # 添加 Docker GPG 密钥
+            install -m 0755 -d /etc/apt/keyrings
+            curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+            chmod a+r /etc/apt/keyrings/docker.gpg
+            
+            # 添加 Docker apt 源
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian ${version_codename} stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+            
             apt update -y
-            apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+            apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
         else
             sh /tmp/get-docker.sh --mirror Aliyun
             rm -f /tmp/get-docker.sh

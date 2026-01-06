@@ -92,12 +92,25 @@ get_github_url() {
     fi
 }
 
-# 获取Docker安装脚本URL（根据是否使用代理）
-get_docker_install_url() {
+# 安装Docker（根据是否使用代理选择不同方式）
+install_docker() {
     if [ "$USE_PROXY" = true ]; then
-        echo "${PROXY_URL}/https://get.docker.com"
+        # 中国IP使用阿里云镜像安装
+        log_info "使用阿里云镜像安装 Docker..."
+        curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+        if [ $? -ne 0 ]; then
+            # 如果直接下载失败，尝试使用阿里云的脚本
+            log_warn "从 get.docker.com 下载失败，尝试备用方案..."
+            curl -fsSL https://mirrors.aliyun.com/docker-ce/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+            apt update -y
+            apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+        else
+            sh /tmp/get-docker.sh --mirror Aliyun
+            rm -f /tmp/get-docker.sh
+        fi
     else
-        echo "https://get.docker.com"
+        curl -fsSL https://get.docker.com | sh
     fi
 }
 
@@ -249,7 +262,7 @@ if command -v docker &> /dev/null; then
         configure_docker_mirror
     elif [ "$CURRENT_DOCKER_VERSION" = "unknown" ]; then
         log_error "无法获取当前 Docker 版本，重新安装..."
-        curl -fsSL "$(get_docker_install_url)" | sh
+        install_docker
         systemctl start docker
         systemctl enable docker
         configure_docker_mirror
@@ -263,7 +276,7 @@ if command -v docker &> /dev/null; then
             log_info "当前 Docker 版本: $CURRENT_DOCKER_VERSION"
             log_info "最新 Docker 版本: $LATEST_DOCKER_VERSION"
             log_info "正在更新 Docker..."
-            curl -fsSL "$(get_docker_install_url)" | sh
+            install_docker
             configure_docker_mirror
             systemctl restart docker
             log_success "Docker 更新完成！新版本: $(docker version --format '{{.Server.Version}}')"
@@ -282,7 +295,7 @@ if command -v docker &> /dev/null; then
     fi
 else
     log_info "Docker 未安装，正在安装..."
-    curl -fsSL "$(get_docker_install_url)" | sh
+    install_docker
     systemctl start docker
     systemctl enable docker
     configure_docker_mirror

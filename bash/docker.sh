@@ -308,9 +308,10 @@ if command -v docker &> /dev/null; then
         CURRENT_NORMALIZED=$(normalize_version "$CURRENT_DOCKER_VERSION")
         LATEST_NORMALIZED=$(normalize_version "$LATEST_DOCKER_VERSION")
         
+        log_info "当前版本: $CURRENT_DOCKER_VERSION (标准化: $CURRENT_NORMALIZED)"
+        log_info "最新版本: $LATEST_DOCKER_VERSION (标准化: $LATEST_NORMALIZED)"
+        
         if [ "$CURRENT_NORMALIZED" != "$LATEST_NORMALIZED" ]; then
-            log_info "当前 Docker 版本: $CURRENT_DOCKER_VERSION"
-            log_info "最新 Docker 版本: $LATEST_DOCKER_VERSION"
             log_info "正在更新 Docker..."
             install_docker
             configure_docker_mirror

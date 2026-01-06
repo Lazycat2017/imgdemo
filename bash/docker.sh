@@ -337,47 +337,63 @@ fi
 
 log_info "检查 Docker Compose..."
 
+# 获取当前安装的 Docker Compose 版本（支持插件和独立版本）
+get_compose_version() {
+    # 优先检查插件版本 (docker compose)
+    if docker compose version &>/dev/null; then
+        docker compose version --short 2>/dev/null
+        return 0
+    fi
+    # 然后检查独立版本 (docker-compose)
+    if command -v docker-compose &>/dev/null; then
+        docker-compose version --short 2>/dev/null
+        return 0
+    fi
+    echo ""
+    return 1
+}
+
+# 检查 Docker Compose 是否已安装
+compose_installed() {
+    docker compose version &>/dev/null || command -v docker-compose &>/dev/null
+}
+
 # 获取最新版本
 LATEST_COMPOSE_VERSION=$(get_latest_version "docker/compose")
 
 if [ -z "$LATEST_COMPOSE_VERSION" ]; then
     log_error "无法获取 Docker Compose 最新版本，跳过安装/更新"
 else
-    if command -v docker-compose &> /dev/null; then
-        log_info "Docker Compose 已安装，检查版本..."
-        CURRENT_COMPOSE_VERSION=$(docker-compose version --short 2>/dev/null || echo "unknown")
+    if compose_installed; then
+        CURRENT_COMPOSE_VERSION=$(get_compose_version)
         
-        if [ "$CURRENT_COMPOSE_VERSION" = "unknown" ]; then
-            log_error "无法获取当前 Docker Compose 版本，重新安装..."
-            COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
-            if download_file "$COMPOSE_DOWNLOAD_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
-                chmod +x /usr/local/bin/docker-compose
-                log_success "Docker Compose 重新安装完成"
-            fi
-        else
+        if [ -n "$CURRENT_COMPOSE_VERSION" ]; then
+            log_info "Docker Compose 已安装，版本: $CURRENT_COMPOSE_VERSION"
+            
             # 标准化版本比较
             CURRENT_NORMALIZED=$(normalize_version "$CURRENT_COMPOSE_VERSION")
             LATEST_NORMALIZED=$(normalize_version "$LATEST_COMPOSE_VERSION")
             
             if [ "$CURRENT_NORMALIZED" != "$LATEST_NORMALIZED" ]; then
-                log_info "当前 Docker Compose 版本: $CURRENT_COMPOSE_VERSION"
                 log_info "最新 Docker Compose 版本: ${LATEST_COMPOSE_VERSION#v}"
                 log_info "正在更新 Docker Compose..."
                 COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
                 if download_file "$COMPOSE_DOWNLOAD_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
                     chmod +x /usr/local/bin/docker-compose
-                    log_success "Docker Compose 更新完成！新版本: $(docker-compose version --short)"
+                    log_success "Docker Compose 更新完成！新版本: $(get_compose_version)"
                 fi
             else
                 log_success "Docker Compose 已是最新版本 ($CURRENT_COMPOSE_VERSION)"
             fi
+        else
+            log_warn "Docker Compose 已安装但无法获取版本"
         fi
     else
         log_info "Docker Compose 未安装，正在安装..."
         COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
         if download_file "$COMPOSE_DOWNLOAD_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
             chmod +x /usr/local/bin/docker-compose
-            log_success "Docker Compose 安装完成！版本: $(docker-compose version --short)"
+            log_success "Docker Compose 安装完成！版本: $(get_compose_version)"
         fi
     fi
 fi
@@ -395,7 +411,7 @@ log_success "========================================"
 echo ""
 log_info "已安装版本："
 echo "  Docker:         $(docker version --format '{{.Server.Version}}' 2>/dev/null || echo '未安装')"
-echo "  Docker Compose: $(docker-compose version --short 2>/dev/null || echo '未安装')"
+echo "  Docker Compose: $(docker compose version --short 2>/dev/null || docker-compose version --short 2>/dev/null || echo '未安装')"
 
 if [ "$USE_PROXY" = true ]; then
     echo ""

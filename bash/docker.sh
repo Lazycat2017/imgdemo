@@ -92,6 +92,15 @@ get_github_url() {
     fi
 }
 
+# 获取Docker安装脚本URL（根据是否使用代理）
+get_docker_install_url() {
+    if [ "$USE_PROXY" = true ]; then
+        echo "${PROXY_URL}/https://get.docker.com"
+    else
+        echo "https://get.docker.com"
+    fi
+}
+
 # 配置Docker镜像代理（安全更新 daemon.json）
 configure_docker_mirror() {
     if [ "$USE_PROXY" = true ]; then
@@ -240,7 +249,7 @@ if command -v docker &> /dev/null; then
         configure_docker_mirror
     elif [ "$CURRENT_DOCKER_VERSION" = "unknown" ]; then
         log_error "无法获取当前 Docker 版本，重新安装..."
-        curl -fsSL https://get.docker.com | sh
+        curl -fsSL "$(get_docker_install_url)" | sh
         systemctl start docker
         systemctl enable docker
         configure_docker_mirror
@@ -254,7 +263,7 @@ if command -v docker &> /dev/null; then
             log_info "当前 Docker 版本: $CURRENT_DOCKER_VERSION"
             log_info "最新 Docker 版本: $LATEST_DOCKER_VERSION"
             log_info "正在更新 Docker..."
-            curl -fsSL https://get.docker.com | sh
+            curl -fsSL "$(get_docker_install_url)" | sh
             configure_docker_mirror
             systemctl restart docker
             log_success "Docker 更新完成！新版本: $(docker version --format '{{.Server.Version}}')"
@@ -273,7 +282,7 @@ if command -v docker &> /dev/null; then
     fi
 else
     log_info "Docker 未安装，正在安装..."
-    curl -fsSL https://get.docker.com | sh
+    curl -fsSL "$(get_docker_install_url)" | sh
     systemctl start docker
     systemctl enable docker
     configure_docker_mirror

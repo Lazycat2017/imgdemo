@@ -196,9 +196,16 @@ EOF
     fi
 }
 
-# 标准化版本号（去除 v 前缀和后缀如 -ce）
+# 标准化版本号（提取纯净版本号，如 29.1.3）
 normalize_version() {
-    echo "$1" | sed 's/^v//' | sed 's/-ce$//' | sed 's/-.*$//'
+    local version="$1"
+    # 去除 docker- 前缀（GitHub 标签格式如 docker-v29.1.3）
+    version="${version#docker-}"
+    # 去除 v 前缀
+    version="${version#v}"
+    # 去除 -ce 等后缀，只保留主版本号 (x.y.z)
+    version=$(echo "$version" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+')
+    echo "$version"
 }
 
 # 安全获取 GitHub API 数据

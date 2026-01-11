@@ -36,7 +36,7 @@ check_dependencies() {
 
 # 获取系统负载函数
 get_load() {
-    cat /proc/loadavg | awk "{print \$1}"
+    cat /proc/loadavg | awk '{print $1}'
 }
 
 # 检查系统负载函数

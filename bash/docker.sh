@@ -133,7 +133,7 @@ install_docker() {
             echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://mirrors.aliyun.com/docker-ce/linux/debian ${version_codename} stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
             
             apt update -y
-            apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin
         else
             sh /tmp/get-docker.sh --mirror Aliyun
             rm -f /tmp/get-docker.sh

@@ -301,42 +301,54 @@ COMPOSE_VER=""
 if command -v docker-compose &>/dev/null; then
     # docker-compose -v 输出格式: "Docker Compose version v2.37.3" 或 "docker-compose version 1.29.2, build ..."
     COMPOSE_VER=$(docker-compose -v 2>/dev/null | grep -oE 'v?[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+    log_info "检测到已安装 docker-compose: $COMPOSE_VER"
+else
+    log_info "docker-compose 命令不存在，需要安装"
 fi
+
+# 后备版本（如果 GitHub API 请求失败时使用）
+FALLBACK_COMPOSE_VERSION="v2.37.3"
 
 LATEST_COMPOSE=$(get_latest_version "docker/compose")
 
-if [ -n "$LATEST_COMPOSE" ]; then
-    NEED_INSTALL=false
-    if [ -z "$COMPOSE_VER" ]; then
-        log_info "Docker Compose 未安装"
+# 如果获取失败，使用后备版本
+if [ -z "$LATEST_COMPOSE" ]; then
+    log_warn "使用后备版本: $FALLBACK_COMPOSE_VERSION"
+    LATEST_COMPOSE="$FALLBACK_COMPOSE_VERSION"
+fi
+
+NEED_INSTALL=false
+if [ -z "$COMPOSE_VER" ]; then
+    log_info "Docker Compose 未安装"
+    NEED_INSTALL=true
+else
+    NORM_CUR_COMP=$(normalize_version "$COMPOSE_VER")
+    NORM_LAT_COMP=$(normalize_version "$LATEST_COMPOSE")
+    log_info "Compose 当前: $NORM_CUR_COMP, 最新: $NORM_LAT_COMP"
+    if [ "$NORM_CUR_COMP" != "$NORM_LAT_COMP" ]; then
         NEED_INSTALL=true
     else
-        NORM_CUR_COMP=$(normalize_version "$COMPOSE_VER")
-        NORM_LAT_COMP=$(normalize_version "$LATEST_COMPOSE")
-        log_info "Compose 当前: $NORM_CUR_COMP, 最新: $NORM_LAT_COMP"
-        if [ "$NORM_CUR_COMP" != "$NORM_LAT_COMP" ]; then
-            NEED_INSTALL=true
-        else
-            log_success "Docker Compose 已是最新"
-        fi
+        log_success "Docker Compose 已是最新"
     fi
+fi
+
+if [ "$NEED_INSTALL" = true ]; then
+    log_info "正在安装/更新 Docker Compose ($LATEST_COMPOSE)..."
     
-    if [ "$NEED_INSTALL" = true ]; then
-        log_info "正在安装/更新 Docker Compose ($LATEST_COMPOSE)..."
-        # 构造下载链接
-        DL_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)")
-        
-        # 直接安装到 /usr/local/bin (独立命令方式)
-        if download_file "$DL_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
-            chmod +x /usr/local/bin/docker-compose
-            log_success "Docker Compose 安装成功"
+    # 构造下载链接
+    DL_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)")
+    log_info "下载地址: $DL_URL"
+    
+    # 直接安装到 /usr/local/bin (独立命令方式)
+    if download_file "$DL_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
+        chmod +x /usr/local/bin/docker-compose
+        log_success "Docker Compose 安装成功"
+        # 验证安装
+        if command -v docker-compose &>/dev/null; then
+            log_info "验证: $(docker-compose -v 2>/dev/null)"
         fi
-    fi
-else
-    if [ -z "$COMPOSE_VER" ]; then
-        log_error "无法获取最新版且本地未安装，Docker Compose 安装失败"
     else
-        log_warn "无法获取最新版，保留当前版本: $COMPOSE_VER"
+        log_error "Docker Compose 安装失败，请手动下载安装"
     fi
 fi
 

@@ -296,10 +296,11 @@ log_info "----------------------------------------"
 log_info "开始检查 Docker Compose 环境"
 log_info "----------------------------------------"
 
-# 优先检查插件版本
+# 使用独立命令 docker-compose 检测版本（避免插件返回错误版本）
 COMPOSE_VER=""
-if docker compose version &>/dev/null; then
-    COMPOSE_VER=$(docker compose version | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+if command -v docker-compose &>/dev/null; then
+    # docker-compose -v 输出格式: "Docker Compose version v2.37.3" 或 "docker-compose version 1.29.2, build ..."
+    COMPOSE_VER=$(docker-compose -v 2>/dev/null | grep -oE 'v?[0-9]+\.[0-9]+\.[0-9]+' | head -1)
 fi
 
 LATEST_COMPOSE=$(get_latest_version "docker/compose")
@@ -325,11 +326,9 @@ if [ -n "$LATEST_COMPOSE" ]; then
         # 构造下载链接
         DL_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)")
         
-        mkdir -p "$DOCKER_COMPOSE_DIR"
-        if download_file "$DL_URL" "${DOCKER_COMPOSE_DIR}/docker-compose" "Docker Compose Plugin"; then
-            chmod +x "${DOCKER_COMPOSE_DIR}/docker-compose"
-            # 兼容旧命令
-            ln -sf "${DOCKER_COMPOSE_DIR}/docker-compose" /usr/local/bin/docker-compose
+        # 直接安装到 /usr/local/bin (独立命令方式)
+        if download_file "$DL_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
+            chmod +x /usr/local/bin/docker-compose
             log_success "Docker Compose 安装成功"
         fi
     fi
@@ -348,5 +347,5 @@ echo ""
 log_success "========================================"
 log_success "所有任务执行完毕！"
 log_info "Docker版本:  $(docker --version 2>/dev/null)"
-log_info "Compose版本: $(docker compose version --short 2>/dev/null)"
+log_info "Compose版本: $(docker-compose -v 2>/dev/null)"
 log_success "========================================"

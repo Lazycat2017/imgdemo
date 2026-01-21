@@ -385,7 +385,7 @@ else
             if [ "$CURRENT_NORMALIZED" != "$LATEST_NORMALIZED" ]; then
                 log_info "最新 Docker Compose 版本: ${LATEST_COMPOSE_VERSION#v}"
                 log_info "正在更新 Docker Compose..."
-                COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
+                COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/v${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
                 if download_file "$COMPOSE_DOWNLOAD_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
                     chmod +x /usr/local/bin/docker-compose
                     log_success "Docker Compose 更新完成！新版本: $(get_compose_version)"
@@ -398,7 +398,7 @@ else
         fi
     else
         log_info "Docker Compose 未安装，正在安装..."
-        COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
+        COMPOSE_DOWNLOAD_URL=$(get_github_url "https://github.com/docker/compose/releases/download/v${LATEST_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)")
         if download_file "$COMPOSE_DOWNLOAD_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
             chmod +x /usr/local/bin/docker-compose
             log_success "Docker Compose 安装完成！版本: $(get_compose_version)"

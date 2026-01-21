@@ -18,7 +18,6 @@ NC='\033[0m' # 无颜色
 # -----------------------------------------------------------------
 PROXY_URL="https://docker.ka.dog"   # Docker 镜像代理
 USE_PROXY=false                     # 初始值，稍后自动检测
-DOCKER_COMPOSE_DIR="/usr/libexec/docker/cli-plugins"
 
 # -----------------------------------------------------------------
 # 基础函数
@@ -87,52 +86,6 @@ get_github_url() {
         echo "$original_url" | sed "s|https://github.com|${PROXY_URL}/https://github.com|g" | sed "s|https://api.github.com|${PROXY_URL}/https://api.github.com|g"
     else
         echo "$original_url"
-    fi
-}
-
-# 标准化版本号 (v20.10.1 -> 20.10.1)
-normalize_version() {
-    echo "$1" | sed -E 's/^docker-//; s/^v//' | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+'
-}
-
-# 获取 GitHub 最新版本
-get_latest_version() {
-    local repo="$1"
-    local api_url
-    api_url=$(get_github_url "https://api.github.com/repos/${repo}/releases/latest")
-    
-    local version
-    version=$(curl -s --connect-timeout 10 "$api_url" | jq -r .tag_name 2>/dev/null)
-    
-    if [ -z "$version" ] || [ "$version" = "null" ]; then
-        # 很多时候是因为 GitHub API 限制，不一定是因为网络不通
-        log_warn "无法获取 $repo 最新版本 (可能是 API 速率限制)，跳过版本检查。"
-        echo ""
-        return 1
-    fi
-    
-    echo "$version"
-}
-
-# 下载文件
-download_file() {
-    local url="$1"
-    local output="$2"
-    local name="$3"
-    
-    log_info "正在下载 $name..."
-    if curl -L --connect-timeout 60 --retry 3 -o "$output" "$url" 2>/dev/null; then
-        if [ -s "$output" ]; then
-            log_success "$name 下载完成"
-            return 0
-        else
-            log_error "$name 下载失败：文件为空"
-            rm -f "$output"
-            return 1
-        fi
-    else
-        log_error "$name 下载请求失败"
-        return 1
     fi
 }
 
@@ -261,27 +214,8 @@ log_info "开始检查 Docker 环境"
 log_info "----------------------------------------"
 
 if command -v docker &> /dev/null; then
-    CURRENT_VER=$(docker version --format '{{.Server.Version}}' 2>/dev/null)
-    LATEST_VER=$(get_latest_version "moby/moby")
-    
-    if [ -n "$LATEST_VER" ]; then
-        NORM_CURRENT=$(normalize_version "$CURRENT_VER")
-        NORM_LATEST=$(normalize_version "$LATEST_VER")
-        
-        if [ "$NORM_CURRENT" != "$NORM_LATEST" ]; then
-            log_info "发现新版本 (当前: $NORM_CURRENT, 最新: $NORM_LATEST)，准备更新..."
-            install_docker
-            # 更新后重置镜像配置以防万一
-            configure_docker_mirror
-            log_success "Docker 更新完毕"
-        else
-            log_success "Docker 已是最新版 ($CURRENT_VER)"
-            configure_docker_mirror # 即使不更新，也要检查配置是否丢失
-        fi
-    else
-        log_warn "跳过 Docker 版本比对"
-        configure_docker_mirror
-    fi
+    log_success "Docker 已安装: $(docker --version 2>/dev/null)"
+    configure_docker_mirror
 else
     log_info "Docker 未安装，开始安装..."
     install_docker
@@ -296,59 +230,21 @@ log_info "----------------------------------------"
 log_info "开始检查 Docker Compose 环境"
 log_info "----------------------------------------"
 
-# 使用独立命令 docker-compose 检测版本（避免插件返回错误版本）
-COMPOSE_VER=""
 if command -v docker-compose &>/dev/null; then
-    # docker-compose -v 输出格式: "Docker Compose version v2.37.3" 或 "docker-compose version 1.29.2, build ..."
-    COMPOSE_VER=$(docker-compose -v 2>/dev/null | grep -oE 'v?[0-9]+\.[0-9]+\.[0-9]+' | head -1)
-    log_info "检测到已安装 docker-compose: $COMPOSE_VER"
+    log_success "Docker Compose 已安装: $(docker-compose -v 2>/dev/null)"
 else
-    log_info "docker-compose 命令不存在，需要安装"
-fi
-
-# 后备版本（如果 GitHub API 请求失败时使用）
-FALLBACK_COMPOSE_VERSION="v2.37.3"
-
-LATEST_COMPOSE=$(get_latest_version "docker/compose")
-
-# 如果获取失败，使用后备版本
-if [ -z "$LATEST_COMPOSE" ]; then
-    log_warn "使用后备版本: $FALLBACK_COMPOSE_VERSION"
-    LATEST_COMPOSE="$FALLBACK_COMPOSE_VERSION"
-fi
-
-NEED_INSTALL=false
-if [ -z "$COMPOSE_VER" ]; then
-    log_info "Docker Compose 未安装"
-    NEED_INSTALL=true
-else
-    NORM_CUR_COMP=$(normalize_version "$COMPOSE_VER")
-    NORM_LAT_COMP=$(normalize_version "$LATEST_COMPOSE")
-    log_info "Compose 当前: $NORM_CUR_COMP, 最新: $NORM_LAT_COMP"
-    if [ "$NORM_CUR_COMP" != "$NORM_LAT_COMP" ]; then
-        NEED_INSTALL=true
-    else
-        log_success "Docker Compose 已是最新"
-    fi
-fi
-
-if [ "$NEED_INSTALL" = true ]; then
-    log_info "正在安装/更新 Docker Compose ($LATEST_COMPOSE)..."
+    log_info "Docker Compose 未安装，开始安装..."
     
     # 构造下载链接
-    DL_URL=$(get_github_url "https://github.com/docker/compose/releases/download/${LATEST_COMPOSE}/docker-compose-$(uname -s)-$(uname -m)")
+    DL_URL=$(get_github_url "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)")
     log_info "下载地址: $DL_URL"
     
-    # 直接安装到 /usr/local/bin (独立命令方式)
-    if download_file "$DL_URL" "/usr/local/bin/docker-compose" "Docker Compose"; then
+    # 直接使用 curl 下载
+    if curl -L --connect-timeout 60 --retry 3 -o /usr/local/bin/docker-compose "$DL_URL"; then
         chmod +x /usr/local/bin/docker-compose
-        log_success "Docker Compose 安装成功"
-        # 验证安装
-        if command -v docker-compose &>/dev/null; then
-            log_info "验证: $(docker-compose -v 2>/dev/null)"
-        fi
+        log_success "Docker Compose 安装成功: $(docker-compose -v 2>/dev/null)"
     else
-        log_error "Docker Compose 安装失败，请手动下载安装"
+        log_error "Docker Compose 下载失败"
     fi
 fi
 

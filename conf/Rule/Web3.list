@@ -135,6 +135,9 @@ DOMAIN-KEYWORD, bitget
 
 # > Huobi
 DOMAIN-SUFFIX,htx.com
+DOMAIN-SUFFIX,htx.com.hr
+DOMAIN-SUFFIX,htx.com.pt
+DOMAIN-SUFFIX,htx.com.ph
 DOMAIN-SUFFIX,hbabit.com
 DOMAIN-SUFFIX,hbfile.net
 DOMAIN-SUFFIX,huobi.com
@@ -158,6 +161,14 @@ PROCESS-NAME,Huobi.exe
 DOMAIN-KEYWORD,huobi
 DOMAIN-SUFFIX,octu88.com
 DOMAIN-SUFFIX,apru88.com
+DOMAIN-SUFFIX,88maru.com
+DOMAIN-SUFFIX,88maru.net
+DOMAIN-SUFFIX,88maru.org
+DOMAIN-SUFFIX,apru88.net
+DOMAIN-SUFFIX,apru88.org
+DOMAIN-SUFFIX,apru88.io
+DOMAIN-SUFFIX,apru88.cc
+DOMAIN-SUFFIX,octu88.cc
 
 # > OKX
 DOMAIN-SUFFIX,okex.com

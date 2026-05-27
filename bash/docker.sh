@@ -51,20 +51,20 @@ is_china_ip() {
     log_info "正在检测网络环境..."
     local country=""
     
-    # 优先尝试 ip-api.com
+    # 优先尝试 ipinfo.io
     local response
-    response=$(curl -s --connect-timeout 5 "http://ip-api.com/json" 2>/dev/null)
+    response=$(curl -s --connect-timeout 5 "https://ipinfo.io/json" 2>/dev/null)
     
     # 因为主流程已安装 jq，直接使用 jq
     if [ -n "$response" ]; then
-        country=$(echo "$response" | jq -r '.countryCode' 2>/dev/null)
+        country=$(echo "$response" | jq -r '.country' 2>/dev/null)
     fi
     
-    # 备选 ipinfo.io
+    # 备选 ip-api.com
     if [ -z "$country" ] || [ "$country" = "null" ]; then
-        response=$(curl -s --connect-timeout 5 "https://ipinfo.io/json" 2>/dev/null)
+        response=$(curl -s --connect-timeout 5 "http://ip-api.com/json" 2>/dev/null)
         if [ -n "$response" ]; then
-            country=$(echo "$response" | jq -r '.country' 2>/dev/null)
+            country=$(echo "$response" | jq -r '.countryCode' 2>/dev/null)
         fi
     fi
     

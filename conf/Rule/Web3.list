@@ -7,15 +7,25 @@ DOMAIN-SUFFIX,bitcointalk.org
 
 # > Exchange
 DOMAIN-SUFFIX,aex.com
+DOMAIN-SUFFIX,arbitrum.io
+DOMAIN-SUFFIX,avax.network
 DOMAIN-SUFFIX,bibox.com
+DOMAIN-SUFFIX,bitbank.cc
+DOMAIN-SUFFIX,bitcoin.org
 DOMAIN-SUFFIX,bitfinex.com
 DOMAIN-SUFFIX,bithumb.com
 DOMAIN-SUFFIX,bitmex.com
+DOMAIN-SUFFIX,bitquick.co
 DOMAIN-SUFFIX,bitstamp.net
 DOMAIN-SUFFIX,bittrex.com
+DOMAIN-SUFFIX,boba.network
+DOMAIN-SUFFIX,btcbox.co.jp
+DOMAIN-SUFFIX,cex.io
 DOMAIN-SUFFIX,coinbase.com
 DOMAIN-SUFFIX,coincheck.com
 DOMAIN-SUFFIX,coinone.co.kr
+DOMAIN-SUFFIX,dogecoin.com
+DOMAIN-SUFFIX,dydx.exchange
 DOMAIN-SUFFIX,gemini.com
 DOMAIN-SUFFIX,korbit.co.kr
 DOMAIN-SUFFIX,kraken.com
@@ -23,73 +33,63 @@ DOMAIN-SUFFIX,kraken.onl
 DOMAIN-SUFFIX,kucoin.com
 DOMAIN-SUFFIX,kucoin.plus
 DOMAIN-SUFFIX,liquid.com
-DOMAIN-SUFFIX,poloniex.com
-DOMAIN-SUFFIX,bitbank.cc
-DOMAIN-SUFFIX,bitcoin.org
-DOMAIN-SUFFIX,bitquick.co
-DOMAIN-SUFFIX,btcbox.co.jp
-DOMAIN-SUFFIX,cex.io
-DOMAIN-SUFFIX,dogecoin.com
-DOMAIN-SUFFIX,paxful.com
-DOMAIN-SUFFIX,tether.to
-DOMAIN-SUFFIX,dydx.exchange
-DOMAIN-SUFFIX,solana.com
-DOMAIN-SUFFIX,avax.network
 DOMAIN-SUFFIX,optimism.io
-DOMAIN-SUFFIX,arbitrum.io
+DOMAIN-SUFFIX,paxful.com
+DOMAIN-SUFFIX,poloniex.com
 DOMAIN-SUFFIX,poly.network
+DOMAIN-SUFFIX,solana.com
+DOMAIN-SUFFIX,tether.to
 DOMAIN-SUFFIX,zkscan.io
 DOMAIN-SUFFIX,zksync.io
-DOMAIN-SUFFIX,boba.network
+
 # > bybit
+DOMAIN,app-measurement.com
 DOMAIN,bybit-exchange.github.io
 DOMAIN,bybit.ada.support
-DOMAIN,app-measurement.com
-DOMAIN-SUFFIX,monitor-frontend-collector.a.bybit-aws.com
-DOMAIN-SUFFIX,ffbbbdc6d3c353211fe2ba39c9f744cd.com       
-DOMAIN-SUFFIX,ffe390afd658c19dcbf707e0597b846d.de  
 DOMAIN-SUFFIX,amazon.com
 DOMAIN-SUFFIX,amazonaws.com
-DOMAIN-SUFFIX,bybit.biz      
-DOMAIN-SUFFIX,bybit.com      
-DOMAIN-SUFFIX,bycsi.com      
-DOMAIN-SUFFIX,bytick.com     
-DOMAIN-SUFFIX,byapis.com     
-DOMAIN-SUFFIX,bycbe.com      
-DOMAIN-SUFFIX,bymj.io        
-DOMAIN-SUFFIX,byabcde.com    
-DOMAIN-SUFFIX,byapps.net     
-DOMAIN-SUFFIX,byd3c3.com     
-DOMAIN-SUFFIX,bybdc6.com     
-DOMAIN-SUFFIX,bybit-global.com
-DOMAIN-SUFFIX,bybit.cloud
-DOMAIN-SUFFIX,bybitglobal.com
 DOMAIN-SUFFIX,appsflyer.com
+DOMAIN-SUFFIX,byabcde.com
+DOMAIN-SUFFIX,byapis.com
+DOMAIN-SUFFIX,byapps.net
+DOMAIN-SUFFIX,bybdc6.com
+DOMAIN-SUFFIX,bybit-global.com
+DOMAIN-SUFFIX,bybit.biz
+DOMAIN-SUFFIX,bybit.cloud
+DOMAIN-SUFFIX,bybit.com
+DOMAIN-SUFFIX,bybitglobal.com
+DOMAIN-SUFFIX,bycbe.com
+DOMAIN-SUFFIX,bycsi.com
+DOMAIN-SUFFIX,byd3c3.com
+DOMAIN-SUFFIX,bymj.io
+DOMAIN-SUFFIX,bytick.com
+DOMAIN-SUFFIX,ffbbbdc6d3c353211fe2ba39c9f744cd.com
+DOMAIN-SUFFIX,ffe390afd658c19dcbf707e0597b846d.de
+DOMAIN-SUFFIX,monitor-frontend-collector.a.bybit-aws.com
 IP-CIDR,13.32.121.6/32
-IP-CIDR,43.133.238.145/32
 IP-CIDR,13.33.187.108/32
-IP-CIDR,150.109.230.182/32 
 IP-CIDR,142.251.215.234/32
-IP-CIDR,43.133.241.84/32 
+IP-CIDR,150.109.230.182/32
 IP-CIDR,3.160.150.37/32
+IP-CIDR,43.133.238.145/32
+IP-CIDR,43.133.241.84/32
+
 # > Binance
+DOMAIN-KEYWORD,binance
 DOMAIN-SUFFIX,binance.cc
+DOMAIN-SUFFIX,binance.charity
 DOMAIN-SUFFIX,binance.cloud
+DOMAIN-SUFFIX,binance.co
 DOMAIN-SUFFIX,binance.com
 DOMAIN-SUFFIX,binance.im
-DOMAIN-SUFFIX,binance.me
-DOMAIN-SUFFIX,binance.us
-DOMAIN-SUFFIX,bnappzh.co
-DOMAIN-SUFFIX,bnappzh.com
-DOMAIN-SUFFIX,bnbstatic.com
-DOMAIN-SUFFIX,bntrace.com
-DOMAIN-SUFFIX,binance.charity
-DOMAIN-SUFFIX,binance.co
 DOMAIN-SUFFIX,binance.info
+DOMAIN-SUFFIX,binance.me
 DOMAIN-SUFFIX,binance.net
 DOMAIN-SUFFIX,binance.org
+DOMAIN-SUFFIX,binance.us
 DOMAIN-SUFFIX,binance.vision
 DOMAIN-SUFFIX,binanceapi.com
+DOMAIN-SUFFIX,binancecnt.com
 DOMAIN-SUFFIX,binancezh.be
 DOMAIN-SUFFIX,binancezh.biz
 DOMAIN-SUFFIX,binancezh.cc
@@ -105,16 +105,16 @@ DOMAIN-SUFFIX,binancezh.net
 DOMAIN-SUFFIX,binancezh.pro
 DOMAIN-SUFFIX,binancezh.sh
 DOMAIN-SUFFIX,binancezh.top
+DOMAIN-SUFFIX,bnappzh.co
+DOMAIN-SUFFIX,bnappzh.com
 DOMAIN-SUFFIX,bnappzh.mobi
+DOMAIN-SUFFIX,bnbstatic.com
+DOMAIN-SUFFIX,bntrace.com
 DOMAIN-SUFFIX,bsc.getblock.io
 DOMAIN-SUFFIX,bscscan.com
-DOMAIN-SUFFIX,binancecnt.com
 PROCESS-NAME,Binance.exe
-DOMAIN-KEYWORD,binance
 
 # > Binance API
-DOMAIN-SUFFIX,binanceapi.com
-DOMAIN-SUFFIX,bnbstatic.com
 DOMAIN-SUFFIX,nftstatic.com
 
 # > Binance SaaS
@@ -125,60 +125,66 @@ DOMAIN-SUFFIX,saasexch.com
 DOMAIN-SUFFIX,saasexch.io
 
 # > BitGet
+DOMAIN-KEYWORD, bitget
+DOMAIN-SUFFIX, bitget.club
 DOMAIN-SUFFIX, bitget.com
 DOMAIN-SUFFIX, bitget.org
-DOMAIN-SUFFIX, bitget.club
 DOMAIN-SUFFIX, bitget.xyz
 DOMAIN-SUFFIX, bitgetapp.com
 DOMAIN-SUFFIX, bitgetapps.com
-DOMAIN-KEYWORD, bitget
 
 # > Huobi
-DOMAIN-SUFFIX,htx.com
-DOMAIN-SUFFIX,htx.com.hr
-DOMAIN-SUFFIX,htx.com.pt
-DOMAIN-SUFFIX,htx.com.ph
+DOMAIN-KEYWORD,huobi
+DOMAIN-SUFFIX,88maru.com
+DOMAIN-SUFFIX,88maru.net
+DOMAIN-SUFFIX,88maru.org
+DOMAIN-SUFFIX,apru88.cc
+DOMAIN-SUFFIX,apru88.com
+DOMAIN-SUFFIX,apru88.io
+DOMAIN-SUFFIX,apru88.net
+DOMAIN-SUFFIX,apru88.org
+DOMAIN-SUFFIX,bitderiv.com
 DOMAIN-SUFFIX,hbabit.com
 DOMAIN-SUFFIX,hbfile.net
+DOMAIN-SUFFIX,heco-scan.com
+DOMAIN-SUFFIX,hecochain.com
+DOMAIN-SUFFIX,hecoview.com
+DOMAIN-SUFFIX,htx.com
+DOMAIN-SUFFIX,htx.com.hr
+DOMAIN-SUFFIX,htx.com.ph
+DOMAIN-SUFFIX,htx.com.pt
+DOMAIN-SUFFIX,huobi.br.com
+DOMAIN-SUFFIX,huobi.co.ma
 DOMAIN-SUFFIX,huobi.com
 DOMAIN-SUFFIX,huobi.me
 DOMAIN-SUFFIX,huobi.pro
 DOMAIN-SUFFIX,huobi.sc
+DOMAIN-SUFFIX,huobi.ug
+DOMAIN-SUFFIX,huobi.ws
 DOMAIN-SUFFIX,huobiasia.vip
 DOMAIN-SUFFIX,huobigroup.com
 DOMAIN-SUFFIX,huobitoken.com
-DOMAIN-SUFFIX,heco-scan.com
-DOMAIN-SUFFIX,hecoview.com
-DOMAIN-SUFFIX,hbfile.net
-DOMAIN-SUFFIX,huobi.br.com
-DOMAIN-SUFFIX,bitderiv.com
-DOMAIN-SUFFIX,hecochain.com
-DOMAIN-SUFFIX,huobi.ws
-DOMAIN-SUFFIX,huobi.ug
-DOMAIN-SUFFIX,huobi.co.ma
-DOMAIN-SUFFIX,huobi.br.com
-PROCESS-NAME,Huobi.exe
-DOMAIN-KEYWORD,huobi
-DOMAIN-SUFFIX,octu88.com
-DOMAIN-SUFFIX,apru88.com
-DOMAIN-SUFFIX,88maru.com
-DOMAIN-SUFFIX,88maru.net
-DOMAIN-SUFFIX,88maru.org
-DOMAIN-SUFFIX,apru88.net
-DOMAIN-SUFFIX,apru88.org
-DOMAIN-SUFFIX,apru88.io
-DOMAIN-SUFFIX,apru88.cc
 DOMAIN-SUFFIX,octu88.cc
+DOMAIN-SUFFIX,octu88.com
+PROCESS-NAME,Huobi.exe
 
 # > OKX
+DOMAIN-KEYWORD,moonpay
+DOMAIN-KEYWORD,moonshot
+DOMAIN-KEYWORD,okx
+DOMAIN-SUFFIX,ably.io
+DOMAIN-SUFFIX,braze.eu
+DOMAIN-SUFFIX,moonpay.com
+DOMAIN-SUFFIX,moonpaycloud.com
+DOMAIN-SUFFIX,moonshot.money
 DOMAIN-SUFFIX,okex.com
-DOMAIN-SUFFIX,okx.com
 DOMAIN-SUFFIX,okx-dns.com
 DOMAIN-SUFFIX,okx-dns1.com
 DOMAIN-SUFFIX,okx-dns2.com
+DOMAIN-SUFFIX,okx.com
+DOMAIN-SUFFIX,siftscience.com
 DOMAIN-SUFFIX,wallet.okex.org
 PROCESS-NAME,OKX.exe
-DOMAIN-KEYWORD,okx
 
 # > asproex
 DOMAIN-SUFFIX,asproex.com
@@ -194,29 +200,27 @@ DOMAIN-SUFFIX,bisq.network
 DOMAIN-SUFFIX,bitsquare.io
 
 # > coinone
-DOMAIN-SUFFIX,coinone.co.kr
 DOMAIN-SUFFIX,coinonecore.com
 DOMAIN-SUFFIX,coinonecorp.com
 
 # > ethereum
+DOMAIN-SUFFIX,cryptofees.info
 DOMAIN-SUFFIX,devcon.org
+DOMAIN-SUFFIX,ethereum-magicians.org
+DOMAIN-SUFFIX,ethereum.cn
 DOMAIN-SUFFIX,ethereum.foundation
 DOMAIN-SUFFIX,ethereum.org
-DOMAIN-SUFFIX,etherscan.io
-DOMAIN-SUFFIX,nansen.ai
-DOMAIN-SUFFIX,ethgasstation.info
-DOMAIN-SUFFIX,watchtheburn.com
-DOMAIN-SUFFIX,flashbots.net
-DOMAIN-SUFFIX,cryptofees.info
-DOMAIN-SUFFIX,etherscan.io
-DOMAIN-SUFFIX,ethereum-magicians.org
-DOMAIN-SUFFIX,vitalik.ca
-DOMAIN-SUFFIX,ethfans.org
-DOMAIN-SUFFIX,ethereum.cn
 DOMAIN-SUFFIX,ethereum.stackexchange.com
-DOMAIN-SUFFIX,etherscan.com
-DOMAIN-SUFFIX,parity.io
 DOMAIN-SUFFIX,ethernodes.org
+DOMAIN-SUFFIX,etherscan.com
+DOMAIN-SUFFIX,etherscan.io
+DOMAIN-SUFFIX,ethfans.org
+DOMAIN-SUFFIX,ethgasstation.info
+DOMAIN-SUFFIX,flashbots.net
+DOMAIN-SUFFIX,nansen.ai
+DOMAIN-SUFFIX,parity.io
+DOMAIN-SUFFIX,vitalik.ca
+DOMAIN-SUFFIX,watchtheburn.com
 
 # > localbitcoins
 DOMAIN-SUFFIX,localbitcoins.com
@@ -231,119 +235,128 @@ DOMAIN-SUFFIX,zb.live
 # > Analysis
 DOMAIN-SUFFIX,aicoin.com
 DOMAIN-SUFFIX,aimoon.com
-DOMAIN-SUFFIX,coingecko.com
-DOMAIN-SUFFIX,coinmarketcap.com
-DOMAIN-SUFFIX,glassnode.com
-DOMAIN-SUFFIX,coinmetrics.io
-DOMAIN-SUFFIX,tokenview.com
-DOMAIN-SUFFIX,oklink.com
-DOMAIN-SUFFIX,blockchair.com
-DOMAIN-SUFFIX,intotheblock.com
-DOMAIN-SUFFIX,bytetree.com
-DOMAIN-SUFFIX,coin.dance
-DOMAIN-SUFFIX,defieye.io
-DOMAIN-SUFFIX,duneanalytics.com
-DOMAIN-SUFFIX,tokenterminal.com
-DOMAIN-SUFFIX,dapp.review
-DOMAIN-SUFFIX,dappradar.com
-DOMAIN-SUFFIX,stateofthedapps.com
-DOMAIN-SUFFIX,thegraph.com
-DOMAIN-SUFFIX,debank.com
-DOMAIN-SUFFIX,vfat.tools
-DOMAIN-SUFFIX,loanscan.io
-DOMAIN-SUFFIX,defirate.com
-DOMAIN-SUFFIX,defipulse.com
 DOMAIN-SUFFIX,apy999.com
-DOMAIN-SUFFIX,defieye.io
-DOMAIN-SUFFIX,dextools.io
-DOMAIN-SUFFIX,tradingview.com
-DOMAIN-SUFFIX,dcabtc.com
-DOMAIN-SUFFIX,chainalysis.com
-DOMAIN-SUFFIX,cryptoquant.com
-DOMAIN-SUFFIX,viewbase.com
-DOMAIN-SUFFIX,bitcoinity.org
-DOMAIN-SUFFIX,cryptocompare.com
-DOMAIN-SUFFIX,coincodex.com
-DOMAIN-SUFFIX,cointrendz.com
-DOMAIN-SUFFIX,coincheckup.com
-DOMAIN-SUFFIX,thetie.io
-DOMAIN-SUFFIX,tradeblock.com
-DOMAIN-SUFFIX,nyctale.io
-DOMAIN-SUFFIX,dovemetrics.com
-DOMAIN-SUFFIX,cryptorank.io
-DOMAIN-SUFFIX,icodrops.com
-DOMAIN-SUFFIX,chainbroker.io
-DOMAIN-SUFFIX,crunchbase.com
-DOMAIN-SUFFIX,defillama.com
-DOMAIN-SUFFIX,coinowo.com
-DOMAIN-SUFFIX,earni.fi
-DOMAIN-SUFFIX,dropsearn.com
+DOMAIN-SUFFIX,ave.ai
 DOMAIN-SUFFIX,bitcoin.it
+DOMAIN-SUFFIX,bitcoinity.org
 DOMAIN-SUFFIX,bitcoinmagazine.com
 DOMAIN-SUFFIX,blockchain.com
+DOMAIN-SUFFIX,blockchair.com
+DOMAIN-SUFFIX,bullx.io
+DOMAIN-SUFFIX,bytetree.com
+DOMAIN-SUFFIX,chainalysis.com
+DOMAIN-SUFFIX,chainbroker.io
+DOMAIN-SUFFIX,coin.dance
+DOMAIN-SUFFIX,coincheckup.com
+DOMAIN-SUFFIX,coincodex.com
+DOMAIN-SUFFIX,coingecko.com
+DOMAIN-SUFFIX,coinmarketcap.com
+DOMAIN-SUFFIX,coinmetrics.io
+DOMAIN-SUFFIX,coinowo.com
+DOMAIN-SUFFIX,cointrendz.com
+DOMAIN-SUFFIX,crunchbase.com
+DOMAIN-SUFFIX,cryptocompare.com
+DOMAIN-SUFFIX,cryptoquant.com
+DOMAIN-SUFFIX,cryptorank.io
+DOMAIN-SUFFIX,dapp.review
+DOMAIN-SUFFIX,dappradar.com
+DOMAIN-SUFFIX,dcabtc.com
+DOMAIN-SUFFIX,debank.com
+DOMAIN-SUFFIX,defieye.io
+DOMAIN-SUFFIX,defillama.com
+DOMAIN-SUFFIX,defipulse.com
+DOMAIN-SUFFIX,defirate.com
+DOMAIN-SUFFIX,dexscreener.com
+DOMAIN-SUFFIX,dextools.io
+DOMAIN-SUFFIX,dovemetrics.com
+DOMAIN-SUFFIX,dropsearn.com
+DOMAIN-SUFFIX,dune.com
+DOMAIN-SUFFIX,duneanalytics.com
+DOMAIN-SUFFIX,earni.fi
+DOMAIN-SUFFIX,geckoterminal.com
+DOMAIN-SUFFIX,glassnode.com
+DOMAIN-SUFFIX,gmgn.ai
+DOMAIN-SUFFIX,icodrops.com
+DOMAIN-SUFFIX,intotheblock.com
+DOMAIN-SUFFIX,loanscan.io
+DOMAIN-SUFFIX,nyctale.io
+DOMAIN-SUFFIX,oklink.com
+DOMAIN-SUFFIX,pump.fun
+DOMAIN-SUFFIX,rootdata.com
+DOMAIN-SUFFIX,scamsniffer.io
+DOMAIN-SUFFIX,stateofthedapps.com
+DOMAIN-SUFFIX,thegraph.com
+DOMAIN-SUFFIX,thetie.io
+DOMAIN-SUFFIX,tinyastro.io
+DOMAIN-SUFFIX,tokenterminal.com
+DOMAIN-SUFFIX,tokenunlocks.app
+DOMAIN-SUFFIX,tokenview.com
+DOMAIN-SUFFIX,tradeblock.com
+DOMAIN-SUFFIX,tradingview.com
 DOMAIN-SUFFIX,tronscan.org
+DOMAIN-SUFFIX,vfat.tools
+DOMAIN-SUFFIX,viewbase.com
 
 # > POOL
-DOMAIN-SUFFIX,btc.com
-DOMAIN-SUFFIX,f2pool.com
-DOMAIN-SUFFIX,cbeci.org
-DOMAIN-SUFFIX,digiconomist.net
 DOMAIN-SUFFIX,1ml.com
 DOMAIN-SUFFIX,bitcoinvisuals.com
-DOMAIN-SUFFIX,crypto51.app
-DOMAIN-SUFFIX,masternodes.online
 DOMAIN-SUFFIX,bitnodes.earn.com
-DOMAIN-SUFFIX,poolin.com
+DOMAIN-SUFFIX,btc.com
+DOMAIN-SUFFIX,cbeci.org
+DOMAIN-SUFFIX,crypto51.app
+DOMAIN-SUFFIX,digiconomist.net
 DOMAIN-SUFFIX,ethermine.org
 DOMAIN-SUFFIX,ewapool.net
+DOMAIN-SUFFIX,f2pool.com
+DOMAIN-SUFFIX,masternodes.online
+DOMAIN-SUFFIX,poolin.com
 
 # > FTX
 DOMAIN-SUFFIX,ftx.com
 
 # > Metamask
-DOMAIN-KEYWORD,metamask
-DOMAIN,token-api.metaswap.codefi.network
 DOMAIN,min-api.cryptocompare.com
+DOMAIN,token-api.metaswap.codefi.network
+DOMAIN-KEYWORD,metamask
 
 # > NFT
-DOMAIN-SUFFIX,opensea.io
-DOMAIN-SUFFIX,nftscan.com
-DOMAIN-SUFFIX,makersplace.com
-DOMAIN-SUFFIX,nonfungible.com
-DOMAIN-SUFFIX,cryptoslam.io
 DOMAIN-SUFFIX,cryptoart.io
+DOMAIN-SUFFIX,cryptoslam.io
+DOMAIN-SUFFIX,makersplace.com
 DOMAIN-SUFFIX,nftcalendar.io
 DOMAIN-SUFFIX,nftgo.io
+DOMAIN-SUFFIX,nftscan.com
+DOMAIN-SUFFIX,nonfungible.com
+DOMAIN-SUFFIX,opensea.io
 
 # > IPFS
-DOMAIN-SUFFIX,filecoin.io
-DOMAIN-SUFFIX,docs.lotu.sh
-DOMAIN-SUFFIX,ipfs.io
-DOMAIN-SUFFIX,docs.ipfs.io
 DOMAIN-SUFFIX,discuss.ipfs.io
+DOMAIN-SUFFIX,docs.ipfs.io
+DOMAIN-SUFFIX,docs.lotu.sh
+DOMAIN-SUFFIX,filecoin.io
+DOMAIN-SUFFIX,ipfs.io
 
 # > EOS
-DOMAIN-SUFFIX,eos.io
-DOMAIN-SUFFIX,developers.eos.io
 DOMAIN-SUFFIX,block.one
-DOMAIN-SUFFIX,eostracker.io
+DOMAIN-SUFFIX,bloks.io
+DOMAIN-SUFFIX,developers.eos.io
+DOMAIN-SUFFIX,eos.io
 DOMAIN-SUFFIX,eosflare.io
 DOMAIN-SUFFIX,eospark.com
-DOMAIN-SUFFIX,bloks.io
+DOMAIN-SUFFIX,eostracker.io
 
 # > Lightning
-DOMAIN-SUFFIX,lightning.engineering
-DOMAIN-SUFFIX,lightning.community
 DOMAIN-SUFFIX,acinq.co
-DOMAIN-SUFFIX,1ml.com
+DOMAIN-SUFFIX,lightning.community
+DOMAIN-SUFFIX,lightning.engineering
 
 # > Token
-DOMAIN-SUFFIX,tokenpocket.pro
-DOMAIN-SUFFIX,token.im
-DOMAIN-SUFFIX,phantom.app
-DOMAIN-SUFFIX,tronlink.org
-DOMAIN-SUFFIX,myetherwallet.com
 DOMAIN-SUFFIX,jaxx.io
+DOMAIN-SUFFIX,myetherwallet.com
+DOMAIN-SUFFIX,phantom.app
+DOMAIN-SUFFIX,token.im
+DOMAIN-SUFFIX,tokenpocket.pro
+DOMAIN-SUFFIX,tronlink.org
 DOMAIN-SUFFIX,trustwalletapp.com
 
 # > Gate
@@ -353,27 +366,28 @@ DOMAIN-SUFFIX,gatedata.org
 DOMAIN-SUFFIX,gateimg.com
 DOMAIN-SUFFIX,gateio.live
 DOMAIN-SUFFIX,gateio.services
+
 # > Mexc
 DOMAIN-SUFFIX,mexc.com
 
 # > Dapp
-DOMAIN-SUFFIX,sushi.com
-DOMAIN-SUFFIX,uniswap.org
-DOMAIN-SUFFIX,sunswap.com
-DOMAIN-SUFFIX,traderjoexyz.com
-DOMAIN-SUFFIX,raydium.io
-DOMAIN-SUFFIX,synthetix.io
+DOMAIN-SUFFIX,1inch.io
 DOMAIN-SUFFIX,aave.com
 DOMAIN-SUFFIX,compound.finance
 DOMAIN-SUFFIX,makerdao.com
-DOMAIN-SUFFIX,wbtc.network
-DOMAIN-SUFFIX,pancakeswap.finance
-DOMAIN-SUFFIX,pancakeswap.com
 DOMAIN-SUFFIX,mdex.co
-DOMAIN-SUFFIX,mdex.one
 DOMAIN-SUFFIX,mdex.com
 DOMAIN-SUFFIX,mdex.me
-DOMAIN-SUFFIX,1inch.io
+DOMAIN-SUFFIX,mdex.one
+DOMAIN-SUFFIX,pancakeswap.com
+DOMAIN-SUFFIX,pancakeswap.finance
+DOMAIN-SUFFIX,raydium.io
+DOMAIN-SUFFIX,sunswap.com
+DOMAIN-SUFFIX,sushi.com
+DOMAIN-SUFFIX,synthetix.io
+DOMAIN-SUFFIX,traderjoexyz.com
+DOMAIN-SUFFIX,uniswap.org
+DOMAIN-SUFFIX,wbtc.network
 
 # > Chippay
 DOMAIN-SUFFIX,chippay.com
@@ -381,22 +395,12 @@ DOMAIN-SUFFIX,chippay.com
 # > UniSat
 DOMAIN-SUFFIX,unisat.io
 
-# > OKX
-DOMAIN-KEYWORD,moonpay
-DOMAIN-SUFFIX,moonpay.com
-DOMAIN-SUFFIX,moonpaycloud.com
-DOMAIN-SUFFIX,siftscience.com
-DOMAIN-SUFFIX,braze.eu
-DOMAIN-KEYWORD,moonshot
-DOMAIN-SUFFIX,moonshot.money
-DOMAIN-SUFFIX,ably.io
-
 # > XAl.space
 DOMAIN-SUFFIX,XAl.space
 
-# > SOL domain 
-DOMAIN-SUFFIX,sns.id
+# > SOL domain
 DOMAIN-SUFFIX,airdrop.sns.id
+DOMAIN-SUFFIX,sns.id
 
 # > Arweave
 DOMAIN, ans-stats.decent.land
@@ -410,54 +414,52 @@ DOMAIN-SUFFIX, circle.com
 DOMAIN-SUFFIX, save.finance
 
 # > Sui
+DOMAIN-SUFFIX, mmt.finance
+DOMAIN-SUFFIX, slush.app
+DOMAIN-SUFFIX, sm.xyz
 DOMAIN-SUFFIX, sui.io
 DOMAIN-SUFFIX, sui.rpcpool.com
 DOMAIN-SUFFIX, suiet.app
 DOMAIN-SUFFIX, suiscan.xyz
 DOMAIN-SUFFIX, suivision.xyz
-DOMAIN-SUFFIX, slush.app
-DOMAIN-SUFFIX, sm.xyz
-DOMAIN-SUFFIX, mmt.finance
 
 # > Sui Protocols
 DOMAIN-SUFFIX, cetus.zone
-DOMAIN-SUFFIX, naviprotocol.io
 DOMAIN-SUFFIX, llama.fi
+DOMAIN-SUFFIX, naviprotocol.io
 DOMAIN-SUFFIX, suilend.fi
 
 # hyperliquid
 DOMAIN-SUFFIX, hyperliquid.xyz
 
-
 # > safetrade
 DOMAIN-SUFFIX,safetrade.com
-
 
 # > nexo
 DOMAIN-SUFFIX,nexo.com
 DOMAIN-SUFFIX,nexo.io
 
 # > onekey
+DOMAIN,onekey.zendesk.com
 DOMAIN-SUFFIX,onekey-asset.com
 DOMAIN-SUFFIX,onekey.so
 DOMAIN-SUFFIX,onekeycn.com
-DOMAIN,onekey.zendesk.com
 
 # > deribit
-DOMAIN-SUFFIX,deribit.com
 DOMAIN,deribit.cdn.prismic.io
+DOMAIN-SUFFIX,deribit.com
 
 # > redotpay
+DOMAIN-SUFFIX,pod-15-sunco-ws.zendesk.com
 DOMAIN-SUFFIX,redotpay.com
 DOMAIN-SUFFIX,redotpay.zendesk.com
-DOMAIN-SUFFIX,pod-15-sunco-ws.zendesk.com
-DOMAIN-SUFFIX,xhpjc6-cdn-settings.appsflyersdk.com
 DOMAIN-SUFFIX,rp-static-apne1.s3.ap-northeast-1.amazonaws.com
+DOMAIN-SUFFIX,xhpjc6-cdn-settings.appsflyersdk.com
 
 # > straitsx
-DOMAIN-SUFFIX,straitsx.com
 DOMAIN,d3r7nsslvs6aaf.cloudfront.net
 DOMAIN,straitsx-826709081262441084-b790f87a2ae6fd417434295.freshchat.com
+DOMAIN-SUFFIX,straitsx.com
 
 # > trustwallet
 DOMAIN-SUFFIX,trustwallet.com
@@ -469,8 +471,8 @@ DOMAIN-SUFFIX,wisekey.com
 DOMAIN-SUFFIX,wisekey.com.hk
 
 # > wynd
-DOMAIN-SUFFIX,wyndlabs.ai
 DOMAIN-SUFFIX,wynd.network
+DOMAIN-SUFFIX,wyndlabs.ai
 
 # > Other Web3 Services
 DOMAIN-SUFFIX,bingx.com
@@ -509,8 +511,8 @@ DOMAIN-SUFFIX,zapper.fi
 DOMAIN-SUFFIX,phemex.com
 
 # > Backpack
-DOMAIN-SUFFIX,backpack.exchange
 DOMAIN-SUFFIX,backpack.app
+DOMAIN-SUFFIX,backpack.exchange
 
 # > BitMart
 DOMAIN-SUFFIX,bitmart.com
@@ -550,213 +552,294 @@ DOMAIN-SUFFIX,hashkey.com
 DOMAIN-SUFFIX,biconomy.com
 
 # > Indian Exchanges
-DOMAIN-SUFFIX,giottus.com
 DOMAIN-SUFFIX,coindcx.com
+DOMAIN-SUFFIX,giottus.com
 DOMAIN-SUFFIX,wazirx.com
 
 # > Other Exchanges
 DOMAIN-SUFFIX,etoro.com
-DOMAIN-SUFFIX,uphold.com
+DOMAIN-SUFFIX,pionex.cc
 DOMAIN-SUFFIX,pionex.com
+DOMAIN-SUFFIX,pionex.us
+DOMAIN-SUFFIX,swissborg.com
+DOMAIN-SUFFIX,uphold.com
+DOMAIN-SUFFIX,woo.network
+DOMAIN-SUFFIX,woo.org
 
 # > DEX (Decentralized Exchanges)
-DOMAIN-SUFFIX,jup.ag
 DOMAIN-SUFFIX,gmx.io
+DOMAIN-SUFFIX,jup.ag
 DOMAIN-SUFFIX,vertexprotocol.com
 
 # > More Exchanges (2024)
 DOMAIN-SUFFIX,bitrue.com
-DOMAIN-SUFFIX,hotcoin.com
+DOMAIN-SUFFIX,bitunix.com
+DOMAIN-SUFFIX,coinw.com
+DOMAIN-SUFFIX,deepcoin.com
 DOMAIN-SUFFIX,digifinex.com
-DOMAIN-SUFFIX,digifinex.vip
 DOMAIN-SUFFIX,digifinex.io
-DOMAIN-SUFFIX,toobit.com
-DOMAIN-SUFFIX,whitebit.com
+DOMAIN-SUFFIX,digifinex.vip
 DOMAIN-SUFFIX,fmfw.io
+DOMAIN-SUFFIX,hotcoin.com
+DOMAIN-SUFFIX,orangex.com
 DOMAIN-SUFFIX,p2b.com
 DOMAIN-SUFFIX,tidex.com
-DOMAIN-SUFFIX,deepcoin.com
-DOMAIN-SUFFIX,coinw.com
-DOMAIN-SUFFIX,bitunix.com
+DOMAIN-SUFFIX,toobit.com
 DOMAIN-SUFFIX,weex.com
-DOMAIN-SUFFIX,orangex.com
+DOMAIN-SUFFIX,whitebit.com
 DOMAIN-SUFFIX,zoomex.com
 
 # > Korean Exchanges
-DOMAIN-SUFFIX,upbit.com
-DOMAIN-SUFFIX,bithumb.com
 DOMAIN-SUFFIX,bithumbcorp.com
+DOMAIN-SUFFIX,upbit.com
 
 # > Japanese Exchanges
 DOMAIN-SUFFIX,zaif.jp
 
 # > DeFi Protocols - Staking & Restaking
-DOMAIN-SUFFIX,lido.fi
+DOMAIN-SUFFIX,babylonchain.io
+DOMAIN-SUFFIX,babylonlabs.io
+DOMAIN-SUFFIX,eigenfoundation.org
 DOMAIN-SUFFIX,eigenlayer.xyz
+DOMAIN-SUFFIX,karak.network
+DOMAIN-SUFFIX,kelpdao.xyz
+DOMAIN-SUFFIX,lido.fi
 DOMAIN-SUFFIX,pendle.finance
+DOMAIN-SUFFIX,puffer.fi
+DOMAIN-SUFFIX,renzoprotocol.com
+DOMAIN-SUFFIX,symbiotic.fi
 
 # > Cross-chain Bridges
-DOMAIN-SUFFIX,stargate.finance
 DOMAIN-SUFFIX,across.to
+DOMAIN-SUFFIX,axelar.network
+DOMAIN-SUFFIX,axelarscan.io
+DOMAIN-SUFFIX,celer.network
+DOMAIN-SUFFIX,debridge.finance
+DOMAIN-SUFFIX,hop.exchange
+DOMAIN-SUFFIX,hyperlane.xyz
 DOMAIN-SUFFIX,layerzero.network
 DOMAIN-SUFFIX,li.fi
-DOMAIN-SUFFIX,synapsprotocol.com
-DOMAIN-SUFFIX,hop.exchange
+DOMAIN-SUFFIX,multichain.org
 DOMAIN-SUFFIX,orbiter.finance
 DOMAIN-SUFFIX,socket.tech
-DOMAIN-SUFFIX,celer.network
-DOMAIN-SUFFIX,multichain.org
+DOMAIN-SUFFIX,stargate.finance
+DOMAIN-SUFFIX,synapseprotocol.com
+DOMAIN-SUFFIX,synapsprotocol.com
 DOMAIN-SUFFIX,wormhole.com
+DOMAIN-SUFFIX,wormhole.foundation
+DOMAIN-SUFFIX,wormholenetwork.com
 
 # > Derivatives Exchanges
+DOMAIN-SUFFIX,delta.exchange
 DOMAIN-SUFFIX,margex.com
 DOMAIN-SUFFIX,primexbt.com
-DOMAIN-SUFFIX,delta.exchange
 
 # > Web3 Wallets
-DOMAIN-SUFFIX,metamask.io
-DOMAIN-SUFFIX,rainbow.me
-DOMAIN-SUFFIX,rabby.io
-DOMAIN-SUFFIX,phantom.com
-DOMAIN-SUFFIX,zerion.io
-DOMAIN-SUFFIX,frame.sh
 DOMAIN-SUFFIX,argent.xyz
-DOMAIN-SUFFIX,ledger.com
-DOMAIN-SUFFIX,exodus.com
-DOMAIN-SUFFIX,coin98.com
-DOMAIN-SUFFIX,safepal.com
-DOMAIN-SUFFIX,mathwallet.org
 DOMAIN-SUFFIX,bitkeep.com
+DOMAIN-SUFFIX,coin98.com
+DOMAIN-SUFFIX,exodus.com
+DOMAIN-SUFFIX,frame.sh
+DOMAIN-SUFFIX,ledger.com
+DOMAIN-SUFFIX,ledgerwallet.com
+DOMAIN-SUFFIX,mathwallet.org
+DOMAIN-SUFFIX,metamask.io
+DOMAIN-SUFFIX,phantom.com
+DOMAIN-SUFFIX,rabby.io
+DOMAIN-SUFFIX,rainbow.me
+DOMAIN-SUFFIX,safe.global
+DOMAIN-SUFFIX,safepal.com
+DOMAIN-SUFFIX,solflare.com
+DOMAIN-SUFFIX,trezor.com
+DOMAIN-SUFFIX,zerion.io
 
 # > Swap Services
-DOMAIN-SUFFIX,tradeogre.com
 DOMAIN-SUFFIX,changelly.com
-DOMAIN-SUFFIX,simpleswap.io
 DOMAIN-SUFFIX,changenow.io
-DOMAIN-SUFFIX,sideshift.ai
-DOMAIN-SUFFIX,fixedfloat.com
 DOMAIN-SUFFIX,exolix.com
+DOMAIN-SUFFIX,fixedfloat.com
+DOMAIN-SUFFIX,sideshift.ai
+DOMAIN-SUFFIX,simpleswap.io
 DOMAIN-SUFFIX,swapzone.io
+DOMAIN-SUFFIX,tradeogre.com
 
 # > Blockchain Data & RPC Providers
 DOMAIN-SUFFIX,alchemy.com
-DOMAIN-SUFFIX,quicknode.com
-DOMAIN-SUFFIX,moralis.io
-DOMAIN-SUFFIX,thegraph.com
-DOMAIN-SUFFIX,chainlink.com
-DOMAIN-SUFFIX,getblock.io
-DOMAIN-SUFFIX,ankr.com
 DOMAIN-SUFFIX,allnodes.com
+DOMAIN-SUFFIX,ankr.com
+DOMAIN-SUFFIX,arbiscan.io
+DOMAIN-SUFFIX,basescan.org
+DOMAIN-SUFFIX,blastapi.io
+DOMAIN-SUFFIX,chainlink.com
+DOMAIN-SUFFIX,chainstack.com
+DOMAIN-SUFFIX,cronoscan.com
+DOMAIN-SUFFIX,drpc.org
+DOMAIN-SUFFIX,ftmscan.com
+DOMAIN-SUFFIX,getblock.io
+DOMAIN-SUFFIX,helius-rpc.com
+DOMAIN-SUFFIX,helius.dev
+DOMAIN-SUFFIX,lava.build
+DOMAIN-SUFFIX,lineascan.build
+DOMAIN-SUFFIX,llamanodes.com
+DOMAIN-SUFFIX,moralis.io
 DOMAIN-SUFFIX,nodereal.io
 DOMAIN-SUFFIX,nownodes.io
-DOMAIN-SUFFIX,drpc.org
+DOMAIN-SUFFIX,polygonscan.com
+DOMAIN-SUFFIX,quicknode.com
+DOMAIN-SUFFIX,scrollscan.com
+DOMAIN-SUFFIX,snowtrace.io
+DOMAIN-SUFFIX,solscan.io
+DOMAIN-SUFFIX,starkscan.co
+DOMAIN-SUFFIX,subscan.io
+DOMAIN-SUFFIX,tenderly.co
 
 # > NFT Marketplaces
 DOMAIN-SUFFIX,blur.io
-DOMAIN-SUFFIX,looksrare.org
-DOMAIN-SUFFIX,x2y2.io
 DOMAIN-SUFFIX,element.market
-DOMAIN-SUFFIX,magiceden.io
-DOMAIN-SUFFIX,tensor.trade
-DOMAIN-SUFFIX,rarible.com
 DOMAIN-SUFFIX,foundation.app
-DOMAIN-SUFFIX,superrare.com
-DOMAIN-SUFFIX,zora.co
+DOMAIN-SUFFIX,looksrare.org
+DOMAIN-SUFFIX,magiceden.io
 DOMAIN-SUFFIX,objkt.com
 DOMAIN-SUFFIX,ordinals.com
+DOMAIN-SUFFIX,rarible.com
+DOMAIN-SUFFIX,superrare.com
+DOMAIN-SUFFIX,tensor.trade
+DOMAIN-SUFFIX,x2y2.io
+DOMAIN-SUFFIX,zora.co
 
 # > Domain Services
 DOMAIN-SUFFIX,ens.domains
-DOMAIN-SUFFIX,unstoppabledomains.com
 DOMAIN-SUFFIX,space.id
 DOMAIN-SUFFIX,starknet.id
+DOMAIN-SUFFIX,unstoppabledomains.com
 
 # > Crypto News & Media
-DOMAIN-SUFFIX,decrypt.co
-DOMAIN-SUFFIX,cointelegraph.com
-DOMAIN-SUFFIX,beincrypto.com
-DOMAIN-SUFFIX,theblockcrypto.com
-DOMAIN-SUFFIX,cryptonews.com
-DOMAIN-SUFFIX,cryptobriefing.com
-DOMAIN-SUFFIX,dailyhodl.com
-DOMAIN-SUFFIX,u.today
-DOMAIN-SUFFIX,newsbtc.com
 DOMAIN-SUFFIX,ambcrypto.com
-DOMAIN-SUFFIX,cryptoslate.com
+DOMAIN-SUFFIX,beincrypto.com
 DOMAIN-SUFFIX,blockonomi.com
+DOMAIN-SUFFIX,cointelegraph.com
+DOMAIN-SUFFIX,cryptobriefing.com
+DOMAIN-SUFFIX,cryptonews.com
 DOMAIN-SUFFIX,cryptopotato.com
+DOMAIN-SUFFIX,cryptoslate.com
+DOMAIN-SUFFIX,dailyhodl.com
+DOMAIN-SUFFIX,decrypt.co
+DOMAIN-SUFFIX,newsbtc.com
+DOMAIN-SUFFIX,theblockcrypto.com
+DOMAIN-SUFFIX,u.today
 
 # > Layer2 Blockchains
-DOMAIN-SUFFIX,base.org
-DOMAIN-SUFFIX,arbitrum.io
+DOMAIN-SUFFIX,aptos.dev
+DOMAIN-SUFFIX,aptosfoundation.org
+DOMAIN-SUFFIX,aptoslabs.com
 DOMAIN-SUFFIX,arbitrum.foundation
-DOMAIN-SUFFIX,optimism.io
-DOMAIN-SUFFIX,scroll.io
-DOMAIN-SUFFIX,linea.build
-DOMAIN-SUFFIX,mantle.xyz
-DOMAIN-SUFFIX,starknet.io
+DOMAIN-SUFFIX,artio.net
+DOMAIN-SUFFIX,base.org
+DOMAIN-SUFFIX,bera.network
+DOMAIN-SUFFIX,berachain.com
 DOMAIN-SUFFIX,blast.io
-DOMAIN-SUFFIX,mode.network
-DOMAIN-SUFFIX,taiko.xyz
-DOMAIN-SUFFIX,metis.io
+DOMAIN-SUFFIX,cardano.org
+DOMAIN-SUFFIX,celestia.org
+DOMAIN-SUFFIX,cosmos.network
+DOMAIN-SUFFIX,fantom.foundation
+DOMAIN-SUFFIX,linea.build
 DOMAIN-SUFFIX,manta.network
+DOMAIN-SUFFIX,mantle.xyz
+DOMAIN-SUFFIX,metis.io
+DOMAIN-SUFFIX,mode.network
+DOMAIN-SUFFIX,monad.xyz
+DOMAIN-SUFFIX,morphl2.io
+DOMAIN-SUFFIX,near.dev
+DOMAIN-SUFFIX,near.org
+DOMAIN-SUFFIX,polkadot.network
 DOMAIN-SUFFIX,polygon.technology
+DOMAIN-SUFFIX,scroll.io
+DOMAIN-SUFFIX,soniclabs.com
+DOMAIN-SUFFIX,starknet.io
+DOMAIN-SUFFIX,taiko.xyz
+DOMAIN-SUFFIX,zircuit.com
 DOMAIN-SUFFIX,zkevm.polygon.technology
 
 # > DeFi Lending & Borrowing
-DOMAIN-SUFFIX,compound.finance
-DOMAIN-SUFFIX,makerdao.com
+DOMAIN-SUFFIX,benqifinance.com
+DOMAIN-SUFFIX,euler.finance
+DOMAIN-SUFFIX,justlend.org
 DOMAIN-SUFFIX,morpho.org
 DOMAIN-SUFFIX,morpho.xyz
-DOMAIN-SUFFIX,spark.fi
-DOMAIN-SUFFIX,euler.finance
-DOMAIN-SUFFIX,benqifinance.com
 DOMAIN-SUFFIX,radiant.capital
+DOMAIN-SUFFIX,spark.fi
 DOMAIN-SUFFIX,venus.io
-DOMAIN-SUFFIX,justlend.org
 
 # > Yield & Aggregators
-DOMAIN-SUFFIX,yearn.fi
-DOMAIN-SUFFIX,convexfinance.com
 DOMAIN-SUFFIX,beefy.finance
+DOMAIN-SUFFIX,convexfinance.com
 DOMAIN-SUFFIX,harvest.finance
+DOMAIN-SUFFIX,yearn.fi
 
 # > Gaming & Metaverse
 DOMAIN-SUFFIX,axieinfinity.com
-DOMAIN-SUFFIX,sandbox.game
 DOMAIN-SUFFIX,decentraland.org
 DOMAIN-SUFFIX,immutable.com
 DOMAIN-SUFFIX,ronin.network
-
-# > bybit
-DOMAIN,bybit-exchange.github.i   
-DOMAIN,app-measurement.com
-DOMAIN-SUFFIX,monitor-frontend-collector.a.bybit-aws.com
-DOMAIN-SUFFIX,ffbbbdc6d3c353211fe2ba39c9f744cd.com       
-DOMAIN-SUFFIX,ffe390afd658c19dcbf707e0597b846d.de  
-DOMAIN-SUFFIX,amazon.com
-DOMAIN-SUFFIX,amazonaws.com
-DOMAIN-SUFFIX,bybit.biz      
-DOMAIN-SUFFIX,bybit.com      
-DOMAIN-SUFFIX,bycsi.com      
-DOMAIN-SUFFIX,bytick.com     
-DOMAIN-SUFFIX,byapis.com     
-DOMAIN-SUFFIX,bycbe.com      
-DOMAIN-SUFFIX,bymj.i        
-DOMAIN-SUFFIX,byabcde.com    
-DOMAIN-SUFFIX,byapps.net     
-DOMAIN-SUFFIX,byd3c3.com     
-DOMAIN-SUFFIX,bybdc6.com     
-DOMAIN-SUFFIX,appsflyer.com
-IP-CIDR,13.32.121.6/32
-IP-CIDR,43.133.238.145/32
-IP-CIDR,13.33.187.108/32
-IP-CIDR,150.109.230.182/32 
-IP-CIDR,142.251.215.234/32
-IP-CIDR,43.133.241.84/32 
-IP-CIDR,3.160.150.37/32
+DOMAIN-SUFFIX,sandbox.game
 
 # > w
-DOMAIN-SUFFIX,pearlfortune.org
 DOMAIN-SUFFIX,ether.fi
+DOMAIN-SUFFIX,pearlfortune.org
 
+# > DeFi Protocols / DEX / Tools (2025-2026)
+DOMAIN-SUFFIX,aerodrome.finance
+DOMAIN-SUFFIX,aevo.xyz
+DOMAIN-SUFFIX,balancer.fi
+DOMAIN-SUFFIX,balancer.network
+DOMAIN-SUFFIX,bluefin.exchange
+DOMAIN-SUFFIX,bluefin.io
+DOMAIN-SUFFIX,camelot.exchange
+DOMAIN-SUFFIX,drift.foundation
+DOMAIN-SUFFIX,drift.trade
+DOMAIN-SUFFIX,ethena.fi
+DOMAIN-SUFFIX,frax.finance
+DOMAIN-SUFFIX,frax.share
+DOMAIN-SUFFIX,jito.network
+DOMAIN-SUFFIX,jito.wtf
+DOMAIN-SUFFIX,kamino.finance
+DOMAIN-SUFFIX,marginfi.com
+DOMAIN-SUFFIX,marinade.finance
+DOMAIN-SUFFIX,meteora.ag
+DOMAIN-SUFFIX,orca.so
+DOMAIN-SUFFIX,quickswap.exchange
+DOMAIN-SUFFIX,scallop.io
+DOMAIN-SUFFIX,scallop.xyz
+DOMAIN-SUFFIX,velodrome.finance
+
+# > Web3 Developer Tools
+DOMAIN-SUFFIX,getfoundry.sh
+DOMAIN-SUFFIX,paradigm.xyz
+DOMAIN-SUFFIX,viem.sh
+DOMAIN-SUFFIX,wagmi.sh
+
+# > Web3 Quests & Airdrops
+DOMAIN-SUFFIX,airdrops.io
+DOMAIN-SUFFIX,galxe.com
+DOMAIN-SUFFIX,layer3.xyz
+DOMAIN-SUFFIX,projectgalaxy.com
+DOMAIN-SUFFIX,questn.com
+DOMAIN-SUFFIX,zealy.io
+
+# > Decentralized Social (DeSoc)
+DOMAIN-SUFFIX,debox.pro
+DOMAIN-SUFFIX,farcaster.xyz
+DOMAIN-SUFFIX,hey.xyz
+DOMAIN-SUFFIX,lens.xyz
+DOMAIN-SUFFIX,warpcast.com
+
+# > DePIN (Decentralized Physical Infrastructure)
+DOMAIN-SUFFIX,aethir.com
+DOMAIN-SUFFIX,akash.network
+DOMAIN-SUFFIX,bittensor.com
+DOMAIN-SUFFIX,getgrass.io
+DOMAIN-SUFFIX,helium.com
+DOMAIN-SUFFIX,io.net
+DOMAIN-SUFFIX,nesa.ai
+DOMAIN-SUFFIX,renderfoundation.com
+DOMAIN-SUFFIX,rendernetwork.com

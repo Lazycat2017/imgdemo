@@ -757,4 +757,6 @@ IP-CIDR,43.133.241.84/32
 IP-CIDR,3.160.150.37/32
 
 # > w
-DOMAIN-SUFFIX,global.pearlfortune.org
+DOMAIN-SUFFIX,pearlfortune.org
+DOMAIN-SUFFIX,ether.fi
+

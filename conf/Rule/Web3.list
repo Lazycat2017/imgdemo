@@ -409,6 +409,13 @@ DOMAIN-SUFFIX, ar-io.net
 DOMAIN-SUFFIX, ardrive.io
 DOMAIN-SUFFIX, arweave.net
 
+# > qita
+DOMAIN-SUFFIX,mypikpak.com
+DOMAIN-SUFFIX,mypikpak.net
+DOMAIN-SUFFIX,pikpak.io
+DOMAIN-SUFFIX,pikpak.me
+DOMAIN-SUFFIX,pikpakdrive.com
+
 # > etc
 DOMAIN-SUFFIX, circle.com
 DOMAIN-SUFFIX, save.finance

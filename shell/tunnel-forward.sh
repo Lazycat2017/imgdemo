@@ -6,6 +6,7 @@
 #   2. 创建/管理 IPv6 GRE (ip6gre) 隧道
 #   3. iptables 端口转发 (DNAT/SNAT)
 #   4. GRE 隧道端口转发 (nftables, 自动识别隧道类型)
+#   5. 首次运行安装到本机，输入 r 打开管理菜单
 #############################################################
 
 red="\033[31m"
@@ -186,16 +187,11 @@ list_gre_tunnels() {
 
 # 获取隧道类型: gre 或 ip6gre
 get_tunnel_type() {
-    local tun_name=$1
-    local info
-    info=$(ip -d link show "$tun_name" 2>/dev/null)
-    if echo "$info" | grep -q "ip6gre"; then
-        echo "ip6gre"
-    elif echo "$info" | grep -q "gre"; then
-        echo "gre"
-    else
-        echo "unknown"
-    fi
+    ip -d link show "$1" 2>/dev/null | awk '
+        $1 == "link/gre6" { print "ip6gre"; found=1; exit }
+        $1 == "link/gre" { print "gre"; found=1; exit }
+        END { if (!found) print "unknown" }
+    '
 }
 
 # 获取隧道内网 IP
@@ -231,6 +227,7 @@ show_banner() {
     echo -e "${reset}"
     echo -e "  本机 IPv4: ${green}$(get_local_ipv4)${reset}"
     echo -e "  本机 IPv6: ${green}$(get_local_ipv6)${reset}"
+    echo -e "  管理命令: ${green}r${reset}（打开本菜单）"
 
     local tunnels
     tunnels=$(list_gre_tunnels)
@@ -246,7 +243,7 @@ create_ipv4_gre() { create_gre_tunnel gre; }
 create_ipv6_gre() { create_gre_tunnel ip6gre; }
 
 create_gre_tunnel() {
-    local tun_type=$1 tun_name local_addr remote_addr local_inner mtu_val default_addr module tmp
+    local tun_type=$1 tun_name local_addr remote_addr local_inner mtu_val default_addr tmp
     echo -e "\n${bold}=== 创建 $tun_type 隧道 ===${reset}\n"
     read -r -p "隧道接口名称 [默认: tun-gre]: " tun_name || return 1
     tun_name=${tun_name:-tun-gre}
@@ -261,10 +258,8 @@ create_gre_tunnel() {
 
     if [[ "$tun_type" == gre ]]; then
         default_addr=$(get_local_ipv4)
-        module=ip_gre
     else
         default_addr=$(get_local_ipv6)
-        module=ip6_gre
     fi
     read -r -p "本机公网地址 [默认: $default_addr]: " local_addr || return 1
     local_addr=${local_addr:-$default_addr}
@@ -293,6 +288,22 @@ create_gre_tunnel() {
         return 1
     fi
     mtu_val=$((10#$mtu_val))
+    with_forward_lock create_gre_tunnel_unlocked "$tun_type" "$tun_name" "$local_addr" "$remote_addr" "$local_inner" "$mtu_val" || return 1
+    echo -e "${green}✓ 隧道已创建: $tun_name ($tun_type), $local_addr → $remote_addr, 内网 $local_inner, MTU $mtu_val${reset}"
+    ask_persist_tunnel "$tun_name" "$tun_type" "$local_addr" "$remote_addr" "$local_inner" "$mtu_val" || {
+        echo -e "${yellow}隧道当前可用，但持久化未完成${reset}" >&2
+        return 1
+    }
+}
+
+# 调用方持有共享锁，接口检查、创建和记录提交不能与另一个创建或删除交错。
+create_gre_tunnel_unlocked() {
+    local tun_type=$1 tun_name=$2 local_addr=$3 remote_addr=$4 local_inner=$5 mtu_val=$6 module tmp
+    if ip link show "$tun_name" &>/dev/null; then
+        echo -e "${red}错误: 接口 $tun_name 已存在${reset}" >&2
+        return 1
+    fi
+    [[ "$tun_type" == gre ]] && module=ip_gre || module=ip6_gre
     modprobe "$module" || { echo -e "${red}错误: 无法加载 $module${reset}"; return 1; }
     if [[ "$tun_type" == gre ]]; then
         ip tunnel add "$tun_name" mode gre remote "$remote_addr" local "$local_addr" ttl 255 || return 1
@@ -314,11 +325,6 @@ create_gre_tunnel() {
         echo -e "${red}错误: 保存隧道记录失败${reset}" >&2
         return 1
     fi
-    echo -e "${green}✓ 隧道已创建: $tun_name ($tun_type), $local_addr → $remote_addr, 内网 $local_inner, MTU $mtu_val${reset}"
-    ask_persist_tunnel "$tun_name" "$tun_type" "$local_addr" "$remote_addr" "$local_inner" "$mtu_val" || {
-        echo -e "${yellow}隧道当前可用，但持久化未完成${reset}" >&2
-        return 1
-    }
 }
 
 render_tunnel_netdev() {
@@ -363,6 +369,12 @@ ask_persist_tunnel() {
     echo "  2) 使用 ifupdown 持久化"
     echo "  3) 不持久化（重启后丢失）"
     read -r -p "请选择 [默认: 3]: " persist_choice || return 1
+    with_forward_lock persist_tunnel_unlocked "$tun_name" "$tun_type" "$local_addr" "$remote_addr" "$inner_ip" "$mtu_val" "${persist_choice:-3}"
+}
+
+persist_tunnel_unlocked() {
+    local tun_name=$1 tun_type=$2 local_addr=$3 remote_addr=$4 inner_ip=$5 mtu_val=$6 persist_choice=$7
+    ip link show "$tun_name" &>/dev/null || { echo "错误: 隧道 $tun_name 已被删除，未保存持久化配置" >&2; return 1; }
     case ${persist_choice:-3} in
     1)
         command -v systemctl >/dev/null && systemctl cat systemd-networkd.service >/dev/null 2>&1 || {
@@ -766,11 +778,10 @@ update_forward_configuration() {
 ensure_forward_service_current() {
     command -v systemctl >/dev/null 2>&1 || return 0
     systemctl is-active --quiet tunnel-forward.service || return 0
-    local source_path exec_start
-    source_path=$(readlink -f "${BASH_SOURCE[0]}") || return 1
+    local exec_start
     exec_start=$(systemctl show -p ExecStart --value tunnel-forward.service) || return 1
     if [[ "$exec_start" == *--forward-daemon* ]] &&
-       cmp -s "$source_path" /usr/local/bin/tunnel-forward-dnat.sh; then
+       write_forward_service_script | cmp -s - /usr/local/bin/tunnel-forward-dnat.sh; then
         return 0
     fi
     echo "检测到运行中的旧版转发服务，先升级服务以避免旧进程覆盖新规则。"
@@ -800,8 +811,11 @@ add_iptables_forward() {
     ensure_forward_service_current || return 1
     enable_ip_forward || return 1
     if with_forward_lock update_forward_configuration add "$localport" "$remotehost" "$remoteport"; then
-        echo -e "${green}✓ 转发规则已保存并生效: $localport → $remotehost:$remoteport (TCP + UDP)${reset}"
-        echo "如需重启后恢复及域名自动更新，请使用菜单 8 安装转发服务。"
+        if ! setup_forward_service; then
+            echo "错误: 规则已保存并在当前系统生效，但开机恢复未完成；请使用菜单 8 重试安装服务。" >&2
+            return 1
+        fi
+        echo -e "${green}✓ 转发规则已保存并生效，已启用开机恢复: $localport → $remotehost:$remoteport (TCP + UDP)${reset}"
     else
         return 1
     fi
@@ -813,7 +827,7 @@ del_iptables_forward() {
     [[ -s "$FORWARD_CONF" ]] || { echo "当前没有转发规则"; return 0; }
     local line choice target_line="" i=1
     local rules=()
-    while IFS= read -r line; do
+    while IFS= read -r line || [[ -n "$line" ]]; do
         [[ -z "$line" ]] && continue
         printf '  %s) %s\n' "$i" "$line"
         rules+=("$line"); ((i+=1))
@@ -839,7 +853,7 @@ list_iptables_forward() {
     echo ""
     echo -e "${bold}=== 当前 iptables 转发规则 (TCP + UDP) ===${reset}"
     if [[ -s "$FORWARD_CONF" ]]; then
-        while IFS= read -r line; do
+        while IFS= read -r line || [[ -n "$line" ]]; do
             [[ -z "$line" ]] || printf '  %s → %s\n' "${line%%>*}" "${line#*>}"
         done < "$FORWARD_CONF"
     else
@@ -858,19 +872,111 @@ run_forward_daemon() {
     done
 }
 
+# bash <(curl ...) 的源文件是管道；从已加载的定义生成后台脚本，避免再次读取管道。
+write_forward_service_script() {
+    printf '#!/bin/bash\n' || return 1
+    declare -p red green yellow cyan bold reset BASE_DIR FORWARD_CONF GRE_CONF TUNNEL_CONF || return 1
+    declare -f || return 1
+    cat <<'DAEMONEOF'
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    run_tunnel_forward "$@"
+fi
+DAEMONEOF
+}
+
+install_local_command() (
+    local manager_dir=/usr/local/lib/tunnel-forward launcher=/usr/local/bin/r
+    local manager="$manager_dir/manager.sh" existing_command staged_script changed=0
+    exec 8>"$BASE_DIR/launcher.lock" || return 1
+    flock -x 8 || return 1
+    existing_command=$(command -v r) || existing_command=""
+    if [[ -n "$existing_command" && "$existing_command" != "$launcher" ]] ||
+       { [[ -e "$launcher" || -L "$launcher" ]] &&
+         { [[ ! -L "$launcher" ]] || [[ "$(readlink "$launcher")" != "$manager" ]]; }; }; then
+        echo "错误: r 命令已被其他程序占用，未覆盖，请先处理已有命令" >&2
+        return 1
+    fi
+    umask 022
+    mkdir -p "$manager_dir" /usr/local/bin || return 1
+    staged_script=$(mktemp "$manager_dir/.manager.XXXXXX") || return 1
+    trap 'rm -f -- "$staged_script"' EXIT
+    write_forward_service_script > "$staged_script" &&
+        bash -n "$staged_script" && chmod 0755 "$staged_script" || return 1
+    if [[ ! -f "$manager" || -L "$manager" ]] || ! cmp -s "$staged_script" "$manager"; then
+        mv -f -- "$staged_script" "$manager" || return 1
+        changed=1
+    fi
+    chmod 0755 "$manager" || return 1
+    if [[ ! -L "$launcher" ]]; then
+        ln -s "$manager" "$launcher" || return 1
+        changed=1
+    fi
+    if [[ "$changed" == 1 ]]; then
+        echo -e "${green}✓ 已安装到本机，以后输入 r 即可打开管理菜单${reset}"
+    fi
+)
+
+restore_forward_service_install() {
+    local work=$1 restore_active=$2 enabled_state=$3 enable_attempted=$4 failed=0
+    if systemctl is-active --quiet tunnel-forward.service; then
+        systemctl stop tunnel-forward.service || failed=1
+    fi
+    if [[ "$enable_attempted" == 1 ]]; then
+        systemctl disable tunnel-forward.service >/dev/null 2>&1 || failed=1
+    fi
+    if [[ -e "$work/script.old" || -L "$work/script.old" ]]; then
+        mv -f -- "$work/script.old" /usr/local/bin/tunnel-forward-dnat.sh || failed=1
+    else
+        rm -f /usr/local/bin/tunnel-forward-dnat.sh || failed=1
+    fi
+    if [[ -e "$work/unit.old" || -L "$work/unit.old" ]]; then
+        mv -f -- "$work/unit.old" /etc/systemd/system/tunnel-forward.service || failed=1
+    else
+        rm -f /etc/systemd/system/tunnel-forward.service || failed=1
+    fi
+    systemctl daemon-reload || failed=1
+    if [[ "$enable_attempted" == 1 ]]; then
+        case "$enabled_state" in
+        enabled) systemctl enable tunnel-forward.service >/dev/null 2>&1 || failed=1 ;;
+        enabled-runtime) systemctl enable --runtime tunnel-forward.service >/dev/null 2>&1 || failed=1 ;;
+        esac
+    fi
+    # 旧版无限循环会覆盖新规则，失败时只恢复已知使用锁和自有链的后台版本。
+    if [[ "$restore_active" == 1 ]]; then
+        systemctl restart tunnel-forward.service && systemctl is-active --quiet tunnel-forward.service || failed=1
+    fi
+    return "$failed"
+}
+
 setup_forward_service() (
     # 在停服务前确认 systemd 可用、安装目录可写并准备完整文件。
     if ! command -v systemctl >/dev/null 2>&1 || ! systemctl show-environment >/dev/null 2>&1; then
         echo "错误: systemd 不可用，未修改转发服务或规则" >&2
         return 1
     fi
-    local source_path staged_script staged_unit
-    source_path=$(readlink -f "${BASH_SOURCE[0]}") || return 1
+    local staged_script staged_unit work was_active=0 safe_active=0 enabled_state exec_start
+    local rollback_needed=0 enable_attempted=0 install_status=0 keep_work=0
+    exec 8>"$BASE_DIR/forward-service.lock" || return 1
+    flock -x 8 || return 1
     mkdir -p /usr/local/bin /etc/systemd/system || return 1
     staged_script=$(mktemp /usr/local/bin/.tunnel-forward-dnat.XXXXXX) || return 1
     staged_unit=$(mktemp /etc/systemd/system/.tunnel-forward.XXXXXX) || { rm -f -- "$staged_script"; return 1; }
-    trap 'rm -f -- "$staged_script" "$staged_unit"' EXIT
-    install -m 0755 "$source_path" "$staged_script" || return 1
+    work=$(mktemp -d "$BASE_DIR/.forward-service.XXXXXX") || { rm -f -- "$staged_script" "$staged_unit"; return 1; }
+    trap 'install_status=$?
+        if [[ "$install_status" != 0 && "$rollback_needed" == 1 ]]; then
+            if ! restore_forward_service_install "$work" "$safe_active" "$enabled_state" "$enable_attempted"; then
+                keep_work=1
+                echo "错误: 转发服务恢复失败，备份保留在 $work；请检查 systemctl status tunnel-forward.service" >&2
+            fi
+            if [[ "$was_active" == 1 && "$safe_active" == 0 ]]; then
+                echo "旧版服务保持停止，以免覆盖当前转发规则；请修复后重试安装。" >&2
+            fi
+        fi
+        rm -f -- "$staged_script" "$staged_unit"
+        if [[ "$keep_work" == 0 ]]; then rm -rf -- "$work"; fi
+        exit "$install_status"' EXIT
+    write_forward_service_script > "$staged_script" &&
+        bash -n "$staged_script" && chmod 0755 "$staged_script" || return 1
     cat > "$staged_unit" <<'SERVICEEOF' || return 1
 [Unit]
 Description=Port forwarding with iptables and dynamic DNS
@@ -887,23 +993,48 @@ WantedBy=multi-user.target
 SERVICEEOF
     chmod 0644 "$staged_unit" || return 1
     enable_ip_forward || return 1
+    enabled_state=$(systemctl is-enabled tunnel-forward.service 2>/dev/null) || :
     if systemctl is-active --quiet tunnel-forward.service; then
+        was_active=1
+        exec_start=$(systemctl show -p ExecStart --value tunnel-forward.service) || return 1
+        if [[ "$exec_start" == *--forward-daemon* ]] &&
+           grep -Eq '^sync_iptables_forward[[:space:]]*\(\)' /usr/local/bin/tunnel-forward-dnat.sh; then
+            safe_active=1
+        fi
+        if [[ "$safe_active" == 1 && "$enabled_state" == enabled ]] &&
+           cmp -s "$staged_script" /usr/local/bin/tunnel-forward-dnat.sh &&
+           cmp -s "$staged_unit" /etc/systemd/system/tunnel-forward.service; then
+            with_forward_lock sync_iptables_forward "$FORWARD_CONF" || return 1
+            echo -e "${green}✓ 转发服务已启用并运行，规则已同步${reset}"
+            return 0
+        fi
+    fi
+    if [[ -e /usr/local/bin/tunnel-forward-dnat.sh || -L /usr/local/bin/tunnel-forward-dnat.sh ]]; then
+        cp -a -- /usr/local/bin/tunnel-forward-dnat.sh "$work/script.old" || return 1
+    fi
+    if [[ -e /etc/systemd/system/tunnel-forward.service || -L /etc/systemd/system/tunnel-forward.service ]]; then
+        cp -a -- /etc/systemd/system/tunnel-forward.service "$work/unit.old" || return 1
+    fi
+    rollback_needed=1
+    if [[ "$was_active" == 1 ]]; then
         systemctl stop tunnel-forward.service || return 1
     fi
-    # 停止旧进程后才能安装新规则；失败时不重启会破坏规则的旧版进程。
     if ! with_forward_lock sync_iptables_forward "$FORWARD_CONF"; then
-        echo "错误: 转发服务未启动，规则更新失败；已保留原规则，请修复后重试安装" >&2
+        echo "错误: 转发规则同步失败，正在恢复安装前的服务状态" >&2
         return 1
     fi
     if mv "$staged_script" /usr/local/bin/tunnel-forward-dnat.sh &&
        mv "$staged_unit" /etc/systemd/system/tunnel-forward.service &&
-       systemctl daemon-reload && systemctl enable tunnel-forward.service &&
-       systemctl restart tunnel-forward.service && systemctl is-active --quiet tunnel-forward.service; then
-        echo -e "${green}✓ 转发服务已安装并启动 (域名动态解析，60 秒轮询)${reset}"
-    else
-        echo "错误: 转发规则已保留，但服务安装或启动失败；请检查 systemctl status tunnel-forward.service 后重试" >&2
-        return 1
+       systemctl daemon-reload; then
+        enable_attempted=1
+        if systemctl enable tunnel-forward.service &&
+           systemctl restart tunnel-forward.service && systemctl is-active --quiet tunnel-forward.service; then
+            echo -e "${green}✓ 转发服务已安装并启动 (域名动态解析，60 秒轮询)${reset}"
+            return 0
+        fi
     fi
+    echo "错误: 转发服务安装或启动失败，正在恢复安装前的服务状态" >&2
+    return 1
 )
 
 # ======================== 模块3: GRE 隧道端口转发 (nftables) ========================
@@ -933,6 +1064,17 @@ gre_ports_overlap() {
         }
         exit 1;
     }'
+}
+
+validate_gre_route() {
+    local peer=$1 tun=$2 route_dev
+    route_dev=$(ip -4 route get "$peer" 2>/dev/null | awk '
+        NR == 1 { for (i=1; i<NF; i++) if ($i == "dev") { print $(i+1); exit } }
+    ')
+    if [[ "$route_dev" != "$tun" ]]; then
+        echo "错误: 到 $peer 的路由出口为 ${route_dev:-不可达}，不是所选隧道 $tun；请先修正隧道网段或对端路由" >&2
+        return 1
+    fi
 }
 
 # ponytail: 菜单配置量小，逐对检查端口区间；大量规则时再改为排序扫描。
@@ -965,6 +1107,7 @@ validate_gre_config() {
             echo -e "${red}错误: GRE 配置中的对端、协议或隧道名称无效${reset}" >&2
             return 1
         fi
+        validate_gre_route "$peer" "$tun" || return 1
         for ((index=0; index<${#ports[@]}; index++)); do
             previous_port="${ports[$index]}"; previous_proto="${protocols[$index]}"
             if { [ "$proto" = 1 ] || [ "$previous_proto" = 1 ] || [ "$proto" = "$previous_proto" ]; } && \
@@ -1133,14 +1276,31 @@ list_gre_forward() {
     nft list table inet mss_clamp 2>/dev/null
 }
 
-setup_gre_nft_service() {
+setup_gre_nft_service() (
     local loader="$BASE_DIR/load-gre-forward.sh" unit="/etc/systemd/system/tunnel-gre-nft.service"
+    local work unit_work was_enabled enable_attempted=0 rollback_failed=0 cleanup=1
+    command -v systemctl >/dev/null && systemctl show-environment >/dev/null 2>&1 || {
+        echo '错误: systemd 不可用，未修改 GRE 服务' >&2; return 1;
+    }
+    was_enabled=$(systemctl is-enabled tunnel-gre-nft.service 2>/dev/null) || :
+    case "$was_enabled" in
+        masked|masked-runtime) echo '错误: GRE 服务已被屏蔽，请先解除屏蔽' >&2; return 1 ;;
+    esac
     mkdir -p /etc/systemd/system || return 1
+    work=$(mktemp -d "$BASE_DIR/.gre-service.XXXXXX") || return 1
+    unit_work=$(mktemp -d /etc/systemd/system/.tunnel-gre-nft.XXXXXX) || { rmdir "$work"; return 1; }
+    trap 'if [ "$cleanup" = 1 ]; then rm -rf -- "$work" "$unit_work"; fi' EXIT
+    if { [[ -e "$loader" || -L "$loader" ]] && ! cp -a -- "$loader" "$work/loader.old"; } ||
+       { [[ -e "$unit" || -L "$unit" ]] && ! cp -a -- "$unit" "$unit_work/unit.old"; }; then
+        return 1
+    fi
     {
         printf '#!/bin/bash\nset -e\nBASE_DIR=%q\n' "$BASE_DIR"
         cat <<'LOADEREOF'
 exec 9>"$BASE_DIR/forward.lock"
 flock -x 9
+sysctl -w net.ipv4.ip_forward=1 >/dev/null
+[ "$(sysctl -n net.ipv4.ip_forward)" = 1 ]
 nft -f "$BASE_DIR/nftables-gre.conf"
 if [ -f "$BASE_DIR/gre-forward-filter.rules" ]; then
     {
@@ -1152,9 +1312,9 @@ if [ -f "$BASE_DIR/gre-forward-filter.rules" ]; then
     } | iptables-restore -w 5 --noflush
 fi
 LOADEREOF
-    } > "$loader" || return 1
-    chmod 700 "$loader" || return 1
-    cat > "$unit" <<SVCEOF || return 1
+    } > "$work/loader.new" || return 1
+    bash -n "$work/loader.new" && chmod 700 "$work/loader.new" || return 1
+    cat > "$unit_work/unit.new" <<SVCEOF || return 1
 [Unit]
 Description=加载 GRE 隧道端口转发规则
 After=network-online.target nftables.service
@@ -1169,8 +1329,39 @@ ExecReload=/bin/bash $loader
 [Install]
 WantedBy=multi-user.target
 SVCEOF
-    systemctl daemon-reload && systemctl enable tunnel-gre-nft >/dev/null 2>&1
-}
+    chmod 644 "$unit_work/unit.new" || return 1
+    if mv -- "$work/loader.new" "$loader" && mv -- "$unit_work/unit.new" "$unit" && systemctl daemon-reload; then
+        enable_attempted=1
+        systemctl enable tunnel-gre-nft.service >/dev/null 2>&1 && return 0
+    fi
+
+    echo '错误: GRE 服务安装失败，正在恢复原服务' >&2
+    if [ "$enable_attempted" = 1 ]; then
+        systemctl disable tunnel-gre-nft.service >/dev/null 2>&1 || rollback_failed=1
+    fi
+    if [[ -e "$work/loader.old" || -L "$work/loader.old" ]]; then
+        mv -- "$work/loader.old" "$loader" || rollback_failed=1
+    else
+        rm -f -- "$loader" || rollback_failed=1
+    fi
+    if [[ -e "$unit_work/unit.old" || -L "$unit_work/unit.old" ]]; then
+        mv -- "$unit_work/unit.old" "$unit" || rollback_failed=1
+    else
+        rm -f -- "$unit" || rollback_failed=1
+    fi
+    systemctl daemon-reload || rollback_failed=1
+    if [ "$enable_attempted" = 1 ]; then
+        case "$was_enabled" in
+            enabled) systemctl enable tunnel-gre-nft.service >/dev/null 2>&1 || rollback_failed=1 ;;
+            enabled-runtime) systemctl enable --runtime tunnel-gre-nft.service >/dev/null 2>&1 || rollback_failed=1 ;;
+        esac
+    fi
+    if [ "$rollback_failed" != 0 ]; then
+        cleanup=0
+        echo "错误: GRE 服务恢复未完成，请检查 $work 和 $unit_work 中的备份" >&2
+    fi
+    return 1
+)
 
 # 仅恢复本模块两个 nft 表与 TF_GRE_FORWARD 链，不触碰其他规则或默认策略。
 restore_gre_snapshot() {
@@ -1433,17 +1624,22 @@ initialize() {
     check_and_install modprobe kmod kmod || return 1
 }
 
-# source 时只加载函数，便于隔离检查；直接运行才初始化系统。
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+run_tunnel_forward() {
     case ${1:-} in
     ''|--forward-daemon)
-        initialize || exit 1
+        initialize || return 1
         if [[ ${1:-} == --forward-daemon ]]; then
             run_forward_daemon
         else
+            install_local_command || return 1
             main_menu
         fi
         ;;
-    *) echo "用法: bash $0 [--forward-daemon]" >&2; exit 2 ;;
+    *) echo "用法: bash $0 [--forward-daemon]" >&2; return 2 ;;
     esac
+}
+
+# source 时只加载函数，便于隔离检查；直接运行才初始化系统。
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    run_tunnel_forward "$@"
 fi
